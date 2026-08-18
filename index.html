@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Web akan terbuka, Menunggu Sidang / Waiting for Defense</title>
+  <title>Restricted Area - Menunggu Sidang / Waiting for Defense</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,600;0,700;1,400&family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
@@ -63,6 +63,7 @@
       animation: floatUp 1s ease-out forwards;
       opacity: 0;
       transform: translateY(30px);
+      margin: 40px 0;
     }
 
     @keyframes floatUp {
@@ -71,7 +72,7 @@
 
     .lock-icon {
       font-size: 50px;
-      margin-bottom: 20px;
+      margin-bottom: 15px;
       animation: pulseLock 2s infinite alternate;
     }
 
@@ -101,14 +102,36 @@
       font-size: 16px;
       font-weight: 400;
       color: #cbd5e1;
-      margin-bottom: 30px;
+      margin-bottom: 25px;
+    }
+
+    .msg-box {
+      background: rgba(255,255,255,0.05);
+      border-left: 4px solid var(--accent-coral);
+      padding: 20px;
+      border-radius: 12px;
+      text-align: left;
+      font-size: 14px;
+      line-height: 1.6;
+      color: #e2e8f0;
+      margin-bottom: 25px;
+    }
+
+    .bible-verse {
+      font-style: italic;
+      color: #ffeaa7;
+      margin-top: 15px;
+      display: block;
+      font-weight: 500;
+      border-top: 1px solid rgba(255,255,255,0.1);
+      padding-top: 10px;
     }
 
     .countdown-box {
       display: flex;
       justify-content: center;
       gap: 15px;
-      margin-bottom: 35px;
+      margin-bottom: 30px;
     }
 
     .time-unit {
@@ -137,55 +160,67 @@
       display: block;
     }
 
-    .msg-box {
-      background: rgba(255,255,255,0.05);
-      border-left: 4px solid var(--accent-coral);
-      padding: 20px;
-      border-radius: 12px;
-      text-align: left;
-      font-size: 14px;
-      line-height: 1.6;
-      color: #e2e8f0;
-      margin-bottom: 25px;
+    .action-grid {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
     }
 
-    .bible-verse {
-      font-style: italic;
-      color: #ffeaa7;
-      margin-top: 15px;
-      display: block;
-      font-weight: 500;
-      border-top: 1px solid rgba(255,255,255,0.1);
-      padding-top: 10px;
-    }
-
-    .btn-check {
+    .btn-action {
       background: linear-gradient(135deg, #00d2ff, #3a7bd5);
       color: white;
       border: none;
-      padding: 15px 30px;
+      padding: 15px 20px;
       font-family: 'Poppins', sans-serif;
       font-size: 15px;
       font-weight: 600;
-      border-radius: 50px;
+      border-radius: 15px;
       cursor: pointer;
       transition: all 0.3s;
-      box-shadow: 0 8px 25px rgba(0, 210, 255, 0.3);
+      box-shadow: 0 6px 15px rgba(0, 210, 255, 0.25);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
     }
 
-    .btn-check:hover {
-      transform: translateY(-3px);
-      box-shadow: 0 12px 30px rgba(0, 210, 255, 0.5);
+    .btn-action.btn-secondary {
+      background: rgba(255, 255, 255, 0.1);
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      box-shadow: none;
+    }
+
+    .btn-action:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 20px rgba(0, 210, 255, 0.4);
+    }
+    
+    .btn-action.btn-secondary:hover {
+      background: rgba(255, 255, 255, 0.15);
+      box-shadow: 0 5px 15px rgba(255, 255, 255, 0.1);
     }
 
     .footer-text {
-      margin-top: 30px;
-      font-size: 12px;
-      color: #64748b;
-      line-height: 1.6;
+      margin-top: 35px;
+      font-size: 13px;
+      color: #94a3b8;
+      line-height: 1.7;
+    }
+    
+    .footer-highlight {
+      color: #ffeaa7;
+      font-weight: 500;
     }
 
-    /* Modal / Pop-up Checklist */
+    .footer-update {
+      margin-top: 15px;
+      font-size: 11px;
+      color: #64748b;
+      padding-top: 15px;
+      border-top: 1px dashed rgba(255,255,255,0.1);
+    }
+
+    /* Modal / Pop-up Styling */
     .modal-overlay {
       position: fixed;
       inset: 0;
@@ -205,7 +240,7 @@
       opacity: 1;
     }
 
-    .checklist-card {
+    .modal-card {
       background: linear-gradient(145deg, #1e293b, #0f172a);
       border: 1px solid rgba(255,255,255,0.15);
       border-radius: 20px;
@@ -218,73 +253,17 @@
       transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
     }
 
-    .modal-overlay.active .checklist-card {
-      transform: scale(1);
-    }
+    .modal-overlay.active .modal-card { transform: scale(1); }
 
-    .checklist-card h3 {
+    .modal-card h3 {
       font-size: 20px;
       color: #ffeaa7;
       margin-bottom: 20px;
       border-bottom: 1px solid rgba(255,255,255,0.1);
       padding-bottom: 10px;
-    }
-    
-    .checklist-subtitle {
-      font-size: 12px;
-      color: #94a3b8;
-      margin-top: -15px;
-      margin-bottom: 20px;
-      font-style: italic;
-    }
-
-    .check-item {
-      display: none; /* Sembunyikan awalnya untuk animasi satu per satu */
-      align-items: center;
-      margin-bottom: 15px;
-      cursor: pointer;
-      font-size: 14px;
-      color: #cbd5e1;
-      transition: color 0.2s;
-      background: rgba(255,255,255,0.05);
-      padding: 12px;
-      border-radius: 12px;
-      border: 1px solid rgba(255,255,255,0.05);
-      animation: fadeInItem 0.5s ease forwards;
-    }
-    
-    @keyframes fadeInItem {
-      from { opacity: 0; transform: translateX(-20px); }
-      to { opacity: 1; transform: translateX(0); }
-    }
-
-    .check-item:hover { background: rgba(255,255,255,0.1); }
-
-    .check-box {
-      width: 22px;
-      height: 22px;
-      border: 2px solid #3a7bd5;
-      border-radius: 6px;
-      margin-right: 12px;
       display: flex;
       align-items: center;
-      justify-content: center;
-      transition: all 0.2s;
-      flex-shrink: 0;
-    }
-
-    .check-item.done .check-box {
-      background: #00e676;
-      border-color: #00e676;
-    }
-    .check-item.done .check-box::after {
-      content: '✓';
-      color: white;
-      font-weight: bold;
-    }
-    .check-item.done span {
-      text-decoration: line-through;
-      color: #64748b;
+      gap: 10px;
     }
 
     .close-modal {
@@ -298,38 +277,62 @@
       border: none;
     }
     .close-modal:hover { color: #ff6b81; }
+
+    /* Checklist Specifics */
+    .check-item {
+      display: none; 
+      align-items: center;
+      margin-bottom: 15px;
+      cursor: pointer;
+      font-size: 14px;
+      color: #cbd5e1;
+      background: rgba(255,255,255,0.05);
+      padding: 12px;
+      border-radius: 12px;
+      border: 1px solid rgba(255,255,255,0.05);
+      animation: fadeInItem 0.5s ease forwards;
+    }
+    @keyframes fadeInItem {
+      from { opacity: 0; transform: translateX(-20px); }
+      to { opacity: 1; transform: translateX(0); }
+    }
+    .check-box {
+      width: 22px; height: 22px; border: 2px solid #3a7bd5; border-radius: 6px;
+      margin-right: 12px; display: flex; align-items: center; justify-content: center; flex-shrink: 0;
+    }
+    .check-item.done .check-box { background: #00e676; border-color: #00e676; }
+    .check-item.done .check-box::after { content: '✓'; color: white; font-weight: bold; }
+    .check-item.done span { text-decoration: line-through; color: #64748b; }
     
     .btn-next {
-      background: linear-gradient(135deg, #ff6b81, #ff8e53);
-      color: white;
-      border: none;
-      padding: 12px 20px;
-      width: 100%;
+      background: linear-gradient(135deg, #ff6b81, #ff8e53); color: white; border: none; padding: 12px 20px;
+      width: 100%; border-radius: 12px; font-weight: 600; margin-top: 15px; cursor: pointer; display: none;
+    }
+    #success-msg { display: none; text-align: center; color: #00e676; font-weight: 600; margin-top: 20px; font-size: 15px; }
+
+    /* Playlist Specifics */
+    .song-box {
+      background: rgba(0,0,0,0.2);
+      border: 1px solid rgba(255,255,255,0.1);
       border-radius: 12px;
-      font-weight: 600;
-      margin-top: 15px;
-      cursor: pointer;
-      display: none;
-      transition: all 0.3s;
+      padding: 15px;
+      margin-bottom: 15px;
     }
-    .btn-next:hover {
-      box-shadow: 0 5px 15px rgba(255,107,129,0.4);
+    .song-title { font-weight: 600; font-size: 15px; color: #00d2ff; margin-bottom: 5px; }
+    .song-desc { font-size: 13px; color: #cbd5e1; line-height: 1.5; margin-bottom: 12px; }
+    .btn-yt {
+      background: #ff0000; color: white; border: none; padding: 8px 15px;
+      border-radius: 8px; font-size: 12px; font-weight: 600; cursor: pointer; text-decoration: none; display: inline-block;
     }
-    
-    #success-msg {
-      display: none;
-      text-align: center;
-      color: #00e676;
-      font-weight: 600;
-      margin-top: 20px;
+    .btn-yt:hover { background: #cc0000; }
+
+    /* Intermezzo Specifics */
+    .intermezzo-text {
       font-size: 15px;
-      animation: pulseSuccess 1.5s infinite alternate;
+      line-height: 1.7;
+      color: #e2e8f0;
     }
-    
-    @keyframes pulseSuccess {
-      from { transform: scale(1); }
-      to { transform: scale(1.05); }
-    }
+    .intermezzo-text b { color: #ff8e53; }
 
     @media (max-width: 500px) {
       .time-unit { min-width: 65px; padding: 10px 5px; }
@@ -382,66 +385,138 @@
     </div>
   </div>
 
-  <button class="btn-check" onclick="openChecklist()">📋 Ceklis Persiapan Sidang / Defense Checklist</button>
+  <div class="action-grid">
+    <button class="btn-action" onclick="openModal('modal-checklist')">📋 Ceklis Persiapan Sidang</button>
+    <button class="btn-action btn-secondary" onclick="openModal('modal-playlist')">🎧 Dengerin Lagu Penenang Jiwa</button>
+    <button class="btn-action btn-secondary" onclick="openModal('modal-intermezzo')">💬 Lek, lagi takut kah?</button>
+  </div>
 
   <div class="footer-text">
-    Menunggu Sidang: Kamis, 20 Agustus 2026 Pukul 09.00 WIB<br>
+    Menunggu Sidang: <b>Kamis, 20 Agustus 2026 Pukul 09.00 WIB</b><br>
     <i>Awaiting Defense: Thursday, August 20, 2026 at 09:00 AM (UTC+7)</i><br><br>
-    Dari Laemu,Glenn — Jakarta, Indonesia
+    Dari Laemu, <b>Glenn</b> — Jakarta, Indonesia<br><br>
+    <span class="footer-highlight">⚠️ Jika ada kendala mengakses ini, harap kabari ke Nantulang ya, biar nanti Nantulang yang kabarin aku.</span>
+    
+    <div class="footer-update">
+      Web ini terakhir di-update pada: Rabu, 19 Agustus 2026 pukul 0:25 WIB
+    </div>
   </div>
 </div>
 
-<!-- Modal Checklist -->
-<div class="modal-overlay" id="modal">
-  <div class="checklist-card">
-    <button class="close-modal" onclick="closeChecklist()">&times;</button>
-    <h3>Persiapan Medan Tempur</h3>
-    <div class="checklist-subtitle">Battlefield Preparation Checklist (5/5)</div>
+<!-- ==============================================
+     MODAL 1: WELCOME ALERTS
+=============================================== -->
+<div class="modal-overlay" id="modal-welcome">
+  <div class="modal-card" style="text-align: center;">
+    <button class="close-modal" onclick="closeModal('modal-welcome')">&times;</button>
+    <div style="font-size: 40px; margin-bottom: 15px;">👋</div>
+    <h3 style="justify-content: center; border:none; margin-bottom:10px;">Haloo Lae Nathanael!</h3>
+    <p style="font-size: 14px; color: #cbd5e1; line-height: 1.6; margin-bottom: 20px;">
+      Harap cek web ini secara berkala ya! Karena Pesan Kemenangan yang sebenarnya baru akan otomatis terbuka di hari <b>Kamis</b> nanti.<br><br>
+      Sambil nunggu, kamu bisa isi ceklis persiapan di halaman utama atau dengerin lagu rekomendasi dari aku. Semangat terus persiapannya!
+    </p>
+    <button class="btn-action" style="width: 100%; margin: 0;" onclick="closeModal('modal-welcome')">Oke, Siap! 🚀</button>
+  </div>
+</div>
+
+<!-- ==============================================
+     MODAL 2: CHECKLIST
+=============================================== -->
+<div class="modal-overlay" id="modal-checklist">
+  <div class="modal-card">
+    <button class="close-modal" onclick="closeModal('modal-checklist')">&times;</button>
+    <h3>📋 Persiapan Medan Tempur</h3>
+    <div style="font-size: 12px; color: #94a3b8; margin-top: -15px; margin-bottom: 20px; font-style: italic;">
+      Battlefield Preparation Checklist (5/5)
+    </div>
     
-    <!-- Item 1 -->
     <div class="check-item" id="item-1" onclick="checkAndNext(1)">
-      <div class="check-box"></div>
-      <span>Udah siapin PPT & Draft Skripsi yang rapi? (Prepared the PPT & Draft?)</span>
+      <div class="check-box"></div><span>Udah siapin PPT & Draft Skripsi yang rapi?</span>
     </div>
-    
-    <!-- Item 2 -->
     <div class="check-item" id="item-2" onclick="checkAndNext(2)">
-      <div class="check-box"></div>
-      <span>Udah konfirmasi dan ingetin Dosen Penguji? (Reminded the Examiners?)</span>
+      <div class="check-box"></div><span>Udah konfirmasi dan ingetin Dosen Penguji?</span>
     </div>
-    
-    <!-- Item 3 -->
     <div class="check-item" id="item-3" onclick="checkAndNext(3)">
-      <div class="check-box"></div>
-      <span>Udah pelajari materi untuk presentasi depan dosen? (Mastered the material?)</span>
+      <div class="check-box"></div><span>Udah pelajari materi dan siap dibantai dosen?</span>
     </div>
-    
-    <!-- Item 4 -->
     <div class="check-item" id="item-4" onclick="checkAndNext(4)">
-      <div class="check-box"></div>
-      <span>Udah beli dan siapin Selempang Kebanggaan? (Prepared the Graduation Sash?)</span>
+      <div class="check-box"></div><span>Udah beli dan siapin Selempang Kebanggaan?</span>
     </div>
-    
-    <!-- Item 5 -->
     <div class="check-item" id="item-5" onclick="checkAndNext(5)">
-      <div class="check-box"></div>
-      <span>Udah berdoa dan berserah penuh sama Tuhan? (Prayed and surrendered to God?)</span>
+      <div class="check-box"></div><span>Udah berdoa dan berserah penuh sama Tuhan?</span>
     </div>
     
-    <!-- Button next -->
     <button class="btn-next" id="btn-next" onclick="showNextItem()">Siap! Lanjut yang lain ➡️</button>
-    
     <div id="success-msg">
-      Yeeeey! 🔥💯<br>
-      Udah SIAP BANGET buat sidang!<br>
-      Maju tak gentar, Tuhan Yesus besertamu, Lek Noel! Gelar S.T. udah di depan mata!
+      Yeeeey! 🔥💯<br>Udah SIAP BANGET buat sidang!<br>Maju tak gentar, Tuhan Yesus besertamu, Lae! Gelar S.T. udah di depan mata!
+    </div>
+  </div>
+</div>
+
+<!-- ==============================================
+     MODAL 3: PLAYLIST ROHANI
+=============================================== -->
+<div class="modal-overlay" id="modal-playlist">
+  <div class="modal-card">
+    <button class="close-modal" onclick="closeModal('modal-playlist')">&times;</button>
+    <h3>🎧 Playlist Penenang Jiwa</h3>
+    
+    <div class="song-box">
+      <div class="song-title">1. Kidung Jemaat 410 - Tenanglah Kini Hatiku</div>
+      <div class="song-desc">
+        Lagu ini mengingatkan bahwa sedahsyat apa pun ombaknya (atau ketegangan di ruang sidang nanti), Tuhan Yesus yang pegang kendali. Hati kita bisa tenang karena jangkar iman kita tertambat aman pada-Nya.
+      </div>
+      <a href="https://www.youtube.com/watch?v=cZDZtz4D-Mg&list=RDcZDZtz4D-Mg&start_radio=1" target="_blank" class="btn-yt">▶ Putar di YouTube</a>
+    </div>
+
+    <div class="song-box">
+      <div class="song-title">2. PKJ 241 - Tak 'Ku Tahu 'Kan Hari Esok</div>
+      <div class="song-desc">
+        Lagu ini ngajarin kita soal penyerahan penuh. Kita nggak perlu tahu persis pertanyaan apa yang bakal keluar dari penguji besok, yang penting kita tahu Siapa yang memegang hari esok kita.
+      </div>
+      <a href="https://www.youtube.com/watch?v=b9EahuGtnwk&list=RDb9EahuGtnwk&start_radio=1" target="_blank" class="btn-yt">▶ Putar di YouTube</a>
+    </div>
+  </div>
+</div>
+
+<!-- ==============================================
+     MODAL 4: INTERMEZZO
+=============================================== -->
+<div class="modal-overlay" id="modal-intermezzo">
+  <div class="modal-card">
+    <button class="close-modal" onclick="closeModal('modal-intermezzo')">&times;</button>
+    <h3>💬 Lek, lagi takut kah?</h3>
+    <div class="intermezzo-text">
+      Jujur aja, pasti ada rasa deg-degan atau *overthinking* kan sekarang?<br><br>
+      Wajar banget, Lae! Sidang akhir itu emang medannya para pejuang. Tapi coba ingat lagi deh gimana perjuanganmu, begadangmu, ngerjain revisian berbulan-bulan dari Bab 1 sampai Bab 5. <b>Kamu udah berjalan sejauh ini!</b><br><br>
+      Gelar S.T. itu udah Tuhan persiapkan di garis *finish*. Tarik napas yang panjang, minum air putih, dan tenangkan pikiran. Dosen penguji cuma butuh melihat keyakinanmu atas apa yang udah kamu tulis.<br><br>
+      <i>You've got this, Lae! Maju tak gentar!</i> 🛡️⚔️
     </div>
   </div>
 </div>
 
 <script>
-  // TARGET TIME: Kamis, 20 Agustus 2026, 09:00:00
-  const countDownDate = new Date("Aug 20, 2026 09:00:00").getTime();
+  // Tampilkan Welcome Popup saat web dibuka
+  window.onload = function() {
+    initParticles();
+    setTimeout(() => { openModal('modal-welcome'); }, 800);
+  };
+
+  // Logic Membuka & Menutup Modal General
+  function openModal(modalId) {
+    document.getElementById(modalId).classList.add('active');
+    // Khusus checklist, munculkan item pertama jika belum selesai
+    if(modalId === 'modal-checklist' && !isDone && currentItem === 1) {
+      document.getElementById('item-1').style.display = 'flex';
+    }
+  }
+
+  function closeModal(modalId) {
+    document.getElementById(modalId).classList.remove('active');
+  }
+
+  // TARGET TIME: Kamis, 20 Agustus 2026, 09:00:00 WIB
+  const countDownDate = new Date("Aug 20, 2026 09:00:00+07:00").getTime();
 
   const timer = setInterval(function() {
     const now = new Date().getTime();
@@ -472,19 +547,8 @@
   const totalItems = 5;
   let isDone = false;
 
-  function openChecklist() {
-    document.getElementById('modal').classList.add('active');
-    if(!isDone && currentItem === 1) {
-      document.getElementById('item-1').style.display = 'flex';
-    }
-  }
-
-  function closeChecklist() {
-    document.getElementById('modal').classList.remove('active');
-  }
-
   function checkAndNext(num) {
-    if(num !== currentItem) return; // Prevent clicking un-focused items
+    if(num !== currentItem) return; 
     
     const item = document.getElementById('item-' + num);
     if (!item.classList.contains('done')) {
@@ -493,7 +557,6 @@
       if (currentItem < totalItems) {
         document.getElementById('btn-next').style.display = 'block';
       } else {
-        // Semuanya selesai
         isDone = true;
         document.getElementById('btn-next').style.display = 'none';
         document.getElementById('success-msg').style.display = 'block';
@@ -511,16 +574,20 @@
   }
 
   // Particles Background
-  const cv = document.getElementById("particle-canvas");
-  const ctx = cv.getContext("2d");
-  let w = cv.width = window.innerWidth;
-  let h = cv.height = window.innerHeight;
-  window.addEventListener("resize", () => { w = cv.width = window.innerWidth; h = cv.height = window.innerHeight; });
+  let cv, ctx, w, h;
   const pts = [];
-  for(let i=0; i<40; i++) pts.push({
-    x:Math.random()*w, y:Math.random()*h, r:Math.random()*2+1, 
-    dx:(Math.random()-0.5)*0.5, dy:(Math.random()-0.5)*0.5, a:Math.random()*0.5+0.1
-  });
+  function initParticles() {
+    cv = document.getElementById("particle-canvas");
+    ctx = cv.getContext("2d");
+    w = cv.width = window.innerWidth;
+    h = cv.height = window.innerHeight;
+    window.addEventListener("resize", () => { w = cv.width = window.innerWidth; h = cv.height = window.innerHeight; });
+    for(let i=0; i<40; i++) pts.push({
+      x:Math.random()*w, y:Math.random()*h, r:Math.random()*2+1, 
+      dx:(Math.random()-0.5)*0.5, dy:(Math.random()-0.5)*0.5, a:Math.random()*0.5+0.1
+    });
+    anim();
+  }
   function anim() {
     ctx.clearRect(0,0,w,h);
     pts.forEach(p => { 
@@ -531,8 +598,8 @@
     });
     requestAnimationFrame(anim);
   }
-  anim();
 
+  // Confetti
   function fireConfetti() {
     var duration = 4.5 * 1000;
     var animationEnd = Date.now() + duration;
