@@ -1,0 +1,551 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Restricted Area - Menunggu Sidang / Waiting for Defense</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,600;0,700;1,400&family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+  <style>
+    :root {
+      --primary-gradient: linear-gradient(135deg, #0f2027, #203a43, #2c5364);
+      --accent-gold: #ffd700;
+      --accent-coral: #ff6b81;
+      --accent-cyan: #12bbe1;
+      --glass-bg: rgba(255, 255, 255, 0.08);
+      --glass-border: rgba(255, 255, 255, 0.15);
+      --text-main: #ffffff;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: 'Poppins', sans-serif;
+      background: var(--primary-gradient);
+      background-size: 400% 400%;
+      animation: gradientBG 15s ease infinite;
+      color: var(--text-main);
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow-x: hidden;
+      position: relative;
+    }
+
+    @keyframes gradientBG {
+      0% { background-position: 0% 50%; }
+      50% { background-position: 100% 50%; }
+      100% { background-position: 0% 50%; }
+    }
+
+    #particle-canvas {
+      position: fixed;
+      top: 0; left: 0; width: 100%; height: 100%;
+      z-index: 0; pointer-events: none;
+    }
+
+    .container {
+      max-width: 650px;
+      width: 92%;
+      padding: 40px;
+      background: var(--glass-bg);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      border-radius: 30px;
+      border: 1px solid var(--glass-border);
+      box-shadow: 0 25px 50px rgba(0,0,0,0.5);
+      position: relative;
+      z-index: 10;
+      text-align: center;
+      animation: floatUp 1s ease-out forwards;
+      opacity: 0;
+      transform: translateY(30px);
+    }
+
+    @keyframes floatUp {
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .lock-icon {
+      font-size: 50px;
+      margin-bottom: 20px;
+      animation: pulseLock 2s infinite alternate;
+    }
+
+    @keyframes pulseLock {
+      from { transform: scale(1); filter: drop-shadow(0 0 10px rgba(255,215,0,0.3)); }
+      to { transform: scale(1.1); filter: drop-shadow(0 0 20px rgba(255,215,0,0.8)); }
+    }
+
+    h1 {
+      font-family: 'Playfair Display', serif;
+      font-size: 32px;
+      font-weight: 700;
+      margin-bottom: 5px;
+      background: linear-gradient(to right, #fff, #ffeaa7);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+    
+    .dual-lang {
+      font-size: 13px;
+      color: #94a3b8;
+      margin-bottom: 25px;
+      font-style: italic;
+    }
+
+    h2.subtitle {
+      font-size: 16px;
+      font-weight: 400;
+      color: #cbd5e1;
+      margin-bottom: 30px;
+    }
+
+    .countdown-box {
+      display: flex;
+      justify-content: center;
+      gap: 15px;
+      margin-bottom: 35px;
+    }
+
+    .time-unit {
+      background: rgba(0, 0, 0, 0.4);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      padding: 15px 10px;
+      border-radius: 15px;
+      min-width: 80px;
+      box-shadow: 0 10px 20px rgba(0,0,0,0.3);
+    }
+
+    .time-val {
+      font-size: 28px;
+      font-weight: 700;
+      color: var(--accent-cyan);
+      display: block;
+      font-family: 'Playfair Display', serif;
+    }
+
+    .time-label {
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      color: #94a3b8;
+      margin-top: 5px;
+      display: block;
+    }
+
+    .msg-box {
+      background: rgba(255,255,255,0.05);
+      border-left: 4px solid var(--accent-coral);
+      padding: 20px;
+      border-radius: 12px;
+      text-align: left;
+      font-size: 14px;
+      line-height: 1.6;
+      color: #e2e8f0;
+      margin-bottom: 25px;
+    }
+
+    .bible-verse {
+      font-style: italic;
+      color: #ffeaa7;
+      margin-top: 15px;
+      display: block;
+      font-weight: 500;
+      border-top: 1px solid rgba(255,255,255,0.1);
+      padding-top: 10px;
+    }
+
+    .btn-check {
+      background: linear-gradient(135deg, #00d2ff, #3a7bd5);
+      color: white;
+      border: none;
+      padding: 15px 30px;
+      font-family: 'Poppins', sans-serif;
+      font-size: 15px;
+      font-weight: 600;
+      border-radius: 50px;
+      cursor: pointer;
+      transition: all 0.3s;
+      box-shadow: 0 8px 25px rgba(0, 210, 255, 0.3);
+    }
+
+    .btn-check:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 12px 30px rgba(0, 210, 255, 0.5);
+    }
+
+    .footer-text {
+      margin-top: 30px;
+      font-size: 12px;
+      color: #64748b;
+      line-height: 1.6;
+    }
+
+    /* Modal / Pop-up Checklist */
+    .modal-overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,0.85);
+      backdrop-filter: blur(10px);
+      z-index: 999;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+      opacity: 0;
+      transition: opacity 0.3s;
+    }
+
+    .modal-overlay.active {
+      display: flex;
+      opacity: 1;
+    }
+
+    .checklist-card {
+      background: linear-gradient(145deg, #1e293b, #0f172a);
+      border: 1px solid rgba(255,255,255,0.15);
+      border-radius: 20px;
+      padding: 30px;
+      width: 100%;
+      max-width: 450px;
+      text-align: left;
+      position: relative;
+      transform: scale(0.9);
+      transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    }
+
+    .modal-overlay.active .checklist-card {
+      transform: scale(1);
+    }
+
+    .checklist-card h3 {
+      font-size: 20px;
+      color: #ffeaa7;
+      margin-bottom: 20px;
+      border-bottom: 1px solid rgba(255,255,255,0.1);
+      padding-bottom: 10px;
+    }
+    
+    .checklist-subtitle {
+      font-size: 12px;
+      color: #94a3b8;
+      margin-top: -15px;
+      margin-bottom: 20px;
+      font-style: italic;
+    }
+
+    .check-item {
+      display: none; /* Sembunyikan awalnya untuk animasi satu per satu */
+      align-items: center;
+      margin-bottom: 15px;
+      cursor: pointer;
+      font-size: 14px;
+      color: #cbd5e1;
+      transition: color 0.2s;
+      background: rgba(255,255,255,0.05);
+      padding: 12px;
+      border-radius: 12px;
+      border: 1px solid rgba(255,255,255,0.05);
+      animation: fadeInItem 0.5s ease forwards;
+    }
+    
+    @keyframes fadeInItem {
+      from { opacity: 0; transform: translateX(-20px); }
+      to { opacity: 1; transform: translateX(0); }
+    }
+
+    .check-item:hover { background: rgba(255,255,255,0.1); }
+
+    .check-box {
+      width: 22px;
+      height: 22px;
+      border: 2px solid #3a7bd5;
+      border-radius: 6px;
+      margin-right: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: all 0.2s;
+      flex-shrink: 0;
+    }
+
+    .check-item.done .check-box {
+      background: #00e676;
+      border-color: #00e676;
+    }
+    .check-item.done .check-box::after {
+      content: '✓';
+      color: white;
+      font-weight: bold;
+    }
+    .check-item.done span {
+      text-decoration: line-through;
+      color: #64748b;
+    }
+
+    .close-modal {
+      position: absolute;
+      top: 15px;
+      right: 20px;
+      font-size: 24px;
+      color: #94a3b8;
+      cursor: pointer;
+      background: none;
+      border: none;
+    }
+    .close-modal:hover { color: #ff6b81; }
+    
+    .btn-next {
+      background: linear-gradient(135deg, #ff6b81, #ff8e53);
+      color: white;
+      border: none;
+      padding: 12px 20px;
+      width: 100%;
+      border-radius: 12px;
+      font-weight: 600;
+      margin-top: 15px;
+      cursor: pointer;
+      display: none;
+      transition: all 0.3s;
+    }
+    .btn-next:hover {
+      box-shadow: 0 5px 15px rgba(255,107,129,0.4);
+    }
+    
+    #success-msg {
+      display: none;
+      text-align: center;
+      color: #00e676;
+      font-weight: 600;
+      margin-top: 20px;
+      font-size: 15px;
+      animation: pulseSuccess 1.5s infinite alternate;
+    }
+    
+    @keyframes pulseSuccess {
+      from { transform: scale(1); }
+      to { transform: scale(1.05); }
+    }
+
+    @media (max-width: 500px) {
+      .time-unit { min-width: 65px; padding: 10px 5px; }
+      .time-val { font-size: 22px; }
+      h1 { font-size: 24px; }
+      .container { padding: 30px 20px; }
+    }
+  </style>
+</head>
+<body>
+
+<canvas id="particle-canvas"></canvas>
+
+<div class="container">
+  <div class="lock-icon">🎓🔒</div>
+  <h1>Pesan Kemenangan Belum Dapat Dibuka</h1>
+  <div class="dual-lang">The Victory Message cannot be opened yet</div>
+  
+  <h2 class="subtitle">Nathanael Gemayel Marpaung, S.T. (Candidate)</h2>
+
+  <div class="msg-box">
+    <b>[ID]</b> Pesan rahasia ini belum bisa dibuka, Lae! Sistem mengunci halaman ini secara otomatis hingga hari medan pertempuranmu (Sidang) tiba. Fokus dulu siapkan dirimu sebaik mungkin!
+    <br><br>
+    <b>[EN]</b> This secret message cannot be unlocked yet, brother! The system has automatically locked this page until the day of your battlefield (Thesis Defense). Focus on preparing yourself!
+    
+    <span class="bible-verse">
+      "Kuda diperlengkapi untuk hari peperangan, tetapi kemenangan ada di tangan TUHAN."<br>
+      <span style="font-size: 11px;">"The horse is made ready for the day of battle, but victory rests with the LORD."</span><br>
+      — Amsal 21:31 / Proverbs 21:31
+    </span>
+  </div>
+
+  <!-- Countdown Timer -->
+  <div class="countdown-box">
+    <div class="time-unit">
+      <span class="time-val" id="days">00</span>
+      <span class="time-label">Hari / Days</span>
+    </div>
+    <div class="time-unit">
+      <span class="time-val" id="hours">00</span>
+      <span class="time-label">Jam / Hrs</span>
+    </div>
+    <div class="time-unit">
+      <span class="time-val" id="mins">00</span>
+      <span class="time-label">Menit / Mins</span>
+    </div>
+    <div class="time-unit">
+      <span class="time-val" id="secs">00</span>
+      <span class="time-label">Detik / Secs</span>
+    </div>
+  </div>
+
+  <button class="btn-check" onclick="openChecklist()">📋 Ceklis Persiapan Sidang / Defense Checklist</button>
+
+  <div class="footer-text">
+    Menunggu Sidang: Kamis, 20 Agustus 2026 Pukul 09.00<br>
+    <i>Awaiting Defense: Thursday, August 20, 2026 at 09:00 AM</i><br><br>
+    Dari Glendito — Jakarta, Indonesia
+  </div>
+</div>
+
+<!-- Modal Checklist -->
+<div class="modal-overlay" id="modal">
+  <div class="checklist-card">
+    <button class="close-modal" onclick="closeChecklist()">&times;</button>
+    <h3>Persiapan Medan Tempur</h3>
+    <div class="checklist-subtitle">Battlefield Preparation Checklist (5/5)</div>
+    
+    <!-- Item 1 -->
+    <div class="check-item" id="item-1" onclick="checkAndNext(1)">
+      <div class="check-box"></div>
+      <span>Udah siapin PPT & Draft Skripsi yang rapi? (Prepared the PPT & Draft?)</span>
+    </div>
+    
+    <!-- Item 2 -->
+    <div class="check-item" id="item-2" onclick="checkAndNext(2)">
+      <div class="check-box"></div>
+      <span>Udah konfirmasi dan ingetin Dosen Penguji? (Reminded the Examiners?)</span>
+    </div>
+    
+    <!-- Item 3 -->
+    <div class="check-item" id="item-3" onclick="checkAndNext(3)">
+      <div class="check-box"></div>
+      <span>Udah pelajari materi dan siap dibantai dosen? (Mastered the material?)</span>
+    </div>
+    
+    <!-- Item 4 -->
+    <div class="check-item" id="item-4" onclick="checkAndNext(4)">
+      <div class="check-box"></div>
+      <span>Udah beli dan siapin Selempang Kebanggaan? (Prepared the Graduation Sash?)</span>
+    </div>
+    
+    <!-- Item 5 -->
+    <div class="check-item" id="item-5" onclick="checkAndNext(5)">
+      <div class="check-box"></div>
+      <span>Udah berdoa dan berserah penuh sama Tuhan? (Prayed and surrendered to God?)</span>
+    </div>
+    
+    <!-- Button next -->
+    <button class="btn-next" id="btn-next" onclick="showNextItem()">Siap! Lanjut yang lain ➡️</button>
+    
+    <div id="success-msg">
+      Yeeeey! 🔥💯<br>
+      Udah SIAP BANGET buat sidang!<br>
+      Maju tak gentar, Tuhan Yesus besertamu, Lae Nathanael! Gelar S.T. udah di depan mata!
+    </div>
+  </div>
+</div>
+
+<script>
+  // TARGET TIME: Kamis, 20 Agustus 2026, 09:00:00
+  const countDownDate = new Date("Aug 20, 2026 09:00:00").getTime();
+
+  const timer = setInterval(function() {
+    const now = new Date().getTime();
+    const distance = countDownDate - now;
+
+    if (distance < 0) {
+      clearInterval(timer);
+      document.getElementById("days").innerText = "00";
+      document.getElementById("hours").innerText = "00";
+      document.getElementById("mins").innerText = "00";
+      document.getElementById("secs").innerText = "00";
+      return;
+    }
+
+    const days = Math.floor(distance / (1000 * 60 * 60 * 24));
+    const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+    const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+    const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+
+    document.getElementById("days").innerText = days < 10 ? "0" + days : days;
+    document.getElementById("hours").innerText = hours < 10 ? "0" + hours : hours;
+    document.getElementById("mins").innerText = minutes < 10 ? "0" + minutes : minutes;
+    document.getElementById("secs").innerText = seconds < 10 ? "0" + seconds : seconds;
+  }, 1000);
+
+  // Modal Checklist Logic
+  let currentItem = 1;
+  const totalItems = 5;
+  let isDone = false;
+
+  function openChecklist() {
+    document.getElementById('modal').classList.add('active');
+    if(!isDone && currentItem === 1) {
+      document.getElementById('item-1').style.display = 'flex';
+    }
+  }
+
+  function closeChecklist() {
+    document.getElementById('modal').classList.remove('active');
+  }
+
+  function checkAndNext(num) {
+    if(num !== currentItem) return; // Prevent clicking un-focused items
+    
+    const item = document.getElementById('item-' + num);
+    if (!item.classList.contains('done')) {
+      item.classList.add('done');
+      
+      if (currentItem < totalItems) {
+        document.getElementById('btn-next').style.display = 'block';
+      } else {
+        // Semuanya selesai
+        isDone = true;
+        document.getElementById('btn-next').style.display = 'none';
+        document.getElementById('success-msg').style.display = 'block';
+        fireConfetti();
+      }
+    }
+  }
+
+  function showNextItem() {
+    document.getElementById('btn-next').style.display = 'none';
+    currentItem++;
+    if (currentItem <= totalItems) {
+      document.getElementById('item-' + currentItem).style.display = 'flex';
+    }
+  }
+
+  // Particles Background
+  const cv = document.getElementById("particle-canvas");
+  const ctx = cv.getContext("2d");
+  let w = cv.width = window.innerWidth;
+  let h = cv.height = window.innerHeight;
+  window.addEventListener("resize", () => { w = cv.width = window.innerWidth; h = cv.height = window.innerHeight; });
+  const pts = [];
+  for(let i=0; i<40; i++) pts.push({
+    x:Math.random()*w, y:Math.random()*h, r:Math.random()*2+1, 
+    dx:(Math.random()-0.5)*0.5, dy:(Math.random()-0.5)*0.5, a:Math.random()*0.5+0.1
+  });
+  function anim() {
+    ctx.clearRect(0,0,w,h);
+    pts.forEach(p => { 
+      ctx.beginPath(); ctx.arc(p.x, p.y, p.r, 0, Math.PI*2); 
+      ctx.fillStyle=`rgba(255,255,255,${p.a})`; ctx.fill(); 
+      p.x+=p.dx; p.y+=p.dy; 
+      if(p.x<0)p.x=w; if(p.x>w)p.x=0; if(p.y<0)p.y=h; if(p.y>h)p.y=0; 
+    });
+    requestAnimationFrame(anim);
+  }
+  anim();
+
+  function fireConfetti() {
+    var duration = 4.5 * 1000;
+    var animationEnd = Date.now() + duration;
+    var defaults = { startVelocity: 30, spread: 360, ticks: 60, zIndex: 10000 };
+    function randomInRange(min, max) { return Math.random() * (max - min) + min; }
+    var interval = setInterval(function() {
+      var timeLeft = animationEnd - Date.now();
+      if (timeLeft <= 0) { return clearInterval(interval); }
+      var particleCount = 50 * (timeLeft / duration);
+      confetti(Object.assign({}, defaults, { particleCount, origin: { x: randomInRange(0.1, 0.3), y: Math.random() - 0.2 } }));
+      confetti(Object.assign({}, defaults, { particleCount, origin: { x: randomInRange(0.7, 0.9), y: Math.random() - 0.2 } }));
+    }, 250);
+  }
+</script>
+</body>
+</html>
