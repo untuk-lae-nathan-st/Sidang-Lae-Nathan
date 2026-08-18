@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Restricted Area - Menunggu Sidang / Waiting for Defense</title>
+  <title>Web belum terbuka, Menunggu Sidang / Waiting for Defense</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,600;0,700;1,400&family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
@@ -184,20 +184,9 @@
       gap: 10px;
     }
 
-    .btn-action.btn-secondary {
-      background: rgba(255, 255, 255, 0.1);
-      border: 1px solid rgba(255, 255, 255, 0.2);
-      box-shadow: none;
-    }
-
     .btn-action:hover {
       transform: translateY(-2px);
       box-shadow: 0 8px 20px rgba(0, 210, 255, 0.4);
-    }
-    
-    .btn-action.btn-secondary:hover {
-      background: rgba(255, 255, 255, 0.15);
-      box-shadow: 0 5px 15px rgba(255, 255, 255, 0.1);
     }
 
     .footer-text {
@@ -386,9 +375,9 @@
   </div>
 
   <div class="action-grid">
-    <button class="btn-action" onclick="openModal('modal-checklist')">📋 Ceklis Persiapan Sidang</button>
-    <button class="btn-action btn-secondary" onclick="openModal('modal-playlist')">🎧 Dengerin Lagu Penenang Jiwa</button>
-    <button class="btn-action btn-secondary" onclick="openModal('modal-intermezzo')">💬 Lek, lagi takut kah?</button>
+    <button class="btn-action" onclick="openModal('modal-checklist')">📋 Centang Persiapan Sidang</button>
+    <button class="btn-action" onclick="openModal('modal-playlist')">🎧 Dengerin Lagu Penenang Jiwa</button>
+    <button class="btn-action" onclick="openModal('modal-intermezzo')">💬 Lek, lagi takut kah?</button>
   </div>
 
   <div class="footer-text">
@@ -398,7 +387,7 @@
     <span class="footer-highlight">⚠️ Jika ada kendala mengakses ini, harap kabari ke Nantulang ya, biar nanti Nantulang yang kabarin aku.</span>
     
     <div class="footer-update">
-      Web ini terakhir di-update pada: Rabu, 19 Agustus 2026 pukul 0:25 WIB
+      Web ini terakhir aku update pada: Rabu, 19 Agustus 2026 pukul 0:51 WIB
     </div>
   </div>
 </div>
@@ -412,8 +401,8 @@
     <div style="font-size: 40px; margin-bottom: 15px;">👋</div>
     <h3 style="justify-content: center; border:none; margin-bottom:10px;">Haloo Lae Nathanael!</h3>
     <p style="font-size: 14px; color: #cbd5e1; line-height: 1.6; margin-bottom: 20px;">
-      Harap cek web ini secara berkala ya! Karena Pesan Kemenangan yang sebenarnya baru akan otomatis terbuka di hari <b>Kamis</b> nanti.<br><br>
-      Sambil nunggu, kamu bisa isi ceklis persiapan di halaman utama atau dengerin lagu rekomendasi dari aku. Semangat terus persiapannya!
+      Harap cek web ini secara berkala ya, Lae! Karena Pesan Kemenangan yang sebenarnya baru akan otomatis terbuka di hari <b>Kamis</b> nanti.<br><br>
+      Sembari nunggu, mari eksplor beberapa hal yang telah aku sajikan di website ini. Semangat terus persiapannya, Lae!
     </p>
     <button class="btn-action" style="width: 100%; margin: 0;" onclick="closeModal('modal-welcome')">Oke, Siap! 🚀</button>
   </div>
@@ -431,19 +420,19 @@
     </div>
     
     <div class="check-item" id="item-1" onclick="checkAndNext(1)">
-      <div class="check-box"></div><span>Udah siapin PPT & Draft Skripsi yang rapi?</span>
+      <div class="check-box"></div><span>Udah siapin PPT & Draft Skripsi yang rapi? (Prepared the PPT & Draft?)</span>
     </div>
     <div class="check-item" id="item-2" onclick="checkAndNext(2)">
-      <div class="check-box"></div><span>Udah konfirmasi dan ingetin Dosen Penguji?</span>
+      <div class="check-box"></div><span>Udah konfirmasi dan ingetin Dosen Penguji? (Reminded the Examiners?)</span>
     </div>
     <div class="check-item" id="item-3" onclick="checkAndNext(3)">
-      <div class="check-box"></div><span>Udah pelajari materi dan siap dibantai dosen?</span>
+      <div class="check-box"></div><span>Udah pelajari materi utk presentasi? (Mastered the presentation material?)</span>
     </div>
     <div class="check-item" id="item-4" onclick="checkAndNext(4)">
-      <div class="check-box"></div><span>Udah beli dan siapin Selempang Kebanggaan?</span>
+      <div class="check-box"></div><span>Udah beli dan siapin Selempang Kebanggaan? (Prepared the Graduation Sash?)</span>
     </div>
     <div class="check-item" id="item-5" onclick="checkAndNext(5)">
-      <div class="check-box"></div><span>Udah berdoa dan berserah penuh sama Tuhan?</span>
+      <div class="check-box"></div><span>Udah berdoa dan berserah penuh sama Tuhan? (Prayed and surrendered to God?)</span>
     </div>
     
     <button class="btn-next" id="btn-next" onclick="showNextItem()">Siap! Lanjut yang lain ➡️</button>
@@ -487,9 +476,9 @@
     <button class="close-modal" onclick="closeModal('modal-intermezzo')">&times;</button>
     <h3>💬 Lek, lagi takut kah?</h3>
     <div class="intermezzo-text">
-      Jujur aja, pasti ada rasa deg-degan atau *overthinking* kan sekarang?<br><br>
-      Wajar banget, Lae! Sidang akhir itu emang medannya para pejuang. Tapi coba ingat lagi deh gimana perjuanganmu, begadangmu, ngerjain revisian berbulan-bulan dari Bab 1 sampai Bab 5. <b>Kamu udah berjalan sejauh ini!</b><br><br>
-      Gelar S.T. itu udah Tuhan persiapkan di garis *finish*. Tarik napas yang panjang, minum air putih, dan tenangkan pikiran. Dosen penguji cuma butuh melihat keyakinanmu atas apa yang udah kamu tulis.<br><br>
+      Jujur aja, pasti ada rasa deg-degan atau overthinking kan sekarang?<br><br>
+      Wajar banget, Lae! Sidang akhir itu emang medannya para pejuang. Tapi coba ingat lagi deh gimana perjuanganmu, begadangmu, ngerjain revisian berbulan-bulan dari Bab 1 sampai Bab 5. <b>Lae udah berjalan sejauh ini!</b><br><br>
+      Gelar S.T. itu udah Tuhan persiapkan di garis finish. Tarik napas yang panjang, minum air putih, dan tenangkan pikiran. Dosen penguji cuma butuh melihat keyakinanmu atas apa yang udah Lae tulis.<br><br>
       <i>You've got this, Lae! Maju tak gentar!</i> 🛡️⚔️
     </div>
   </div>
