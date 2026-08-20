@@ -3,19 +3,23 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Web belum terbuka, Menunggu Sidang / Waiting for Defense</title>
+  <title>Pesan Kemenangan - Selamat Sidang Lae Nathanael</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,600;0,700;1,400&family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
   <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
   <style>
     :root {
-      --primary-gradient: linear-gradient(135deg, #0f2027, #203a43, #2c5364);
+      /* Tema Galaxy (Default) */
+      --bg-galaxy: linear-gradient(135deg, #1a0836, #2d0b4e, #0f172a, #311042, #111827);
+      /* Tema Ocean */
+      --bg-ocean: linear-gradient(135deg, #0f2027, #203a43, #2c5364, #12343b, #0a192f);
+      
       --accent-gold: #ffd700;
       --accent-coral: #ff6b81;
       --accent-cyan: #12bbe1;
-      --glass-bg: rgba(255, 255, 255, 0.08);
-      --glass-border: rgba(255, 255, 255, 0.15);
+      --glass-bg: rgba(255, 255, 255, 0.12);
+      --glass-border: rgba(255, 255, 255, 0.25);
       --text-main: #ffffff;
     }
 
@@ -23,16 +27,23 @@
 
     body {
       font-family: 'Poppins', sans-serif;
-      background: var(--primary-gradient);
+      background: var(--bg-galaxy);
       background-size: 400% 400%;
-      animation: gradientBG 15s ease infinite;
+      animation: gradientBG 18s ease infinite;
       color: var(--text-main);
       min-height: 100vh;
       display: flex;
+      flex-direction: column;
       align-items: center;
-      justify-content: center;
       overflow-x: hidden;
       position: relative;
+      padding: 30px 15px 120px 15px; /* bottom padding for footer */
+      transition: background 0.8s ease;
+    }
+
+    body.theme-ocean {
+      background: var(--bg-ocean);
+      background-size: 400% 400%;
     }
 
     @keyframes gradientBG {
@@ -47,287 +58,251 @@
       z-index: 0; pointer-events: none;
     }
 
-    .container {
-      max-width: 650px;
-      width: 92%;
-      padding: 40px;
-      background: var(--glass-bg);
-      backdrop-filter: blur(20px);
-      -webkit-backdrop-filter: blur(20px);
-      border-radius: 30px;
-      border: 1px solid var(--glass-border);
-      box-shadow: 0 25px 50px rgba(0,0,0,0.5);
-      position: relative;
-      z-index: 10;
-      text-align: center;
-      animation: floatUp 1s ease-out forwards;
-      opacity: 0;
-      transform: translateY(30px);
-      margin: 40px 0;
+    /* WELCOME POPUP MODAL */
+    .welcome-modal {
+      position: fixed; inset: 0; background: rgba(15, 23, 42, 0.95);
+      backdrop-filter: blur(25px); z-index: 99999; display: flex;
+      align-items: center; justify-content: center; padding: 20px;
+      animation: fadeIn 0.4s ease;
+    }
+    .welcome-card {
+      background: linear-gradient(145deg, #1e293b, #0f172a);
+      border: 2px solid var(--accent-gold);
+      border-radius: 30px; padding: 40px 30px; max-width: 500px; width: 100%;
+      text-align: center; box-shadow: 0 0 80px rgba(255, 215, 0, 0.3);
+      animation: zoomBounce 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+      position: relative; overflow: hidden;
+    }
+    
+    .welcome-card::before {
+      content: ''; position: absolute; top: -50%; left: -50%; width: 200%; height: 200%;
+      background: conic-gradient(transparent, var(--accent-gold), transparent 30%);
+      animation: rotateLight 4s linear infinite; opacity: 0.15; z-index: 0;
+      pointer-events: none; /* VERY IMPORTANT: SO IT DOESNT BLOCK CLICKS */
+    }
+    
+    @keyframes rotateLight { 100% { transform: rotate(360deg); } }
+    @keyframes zoomBounce { 
+      0% { transform: scale(0.5); opacity: 0; } 
+      80% { transform: scale(1.05); opacity: 1; } 
+      100% { transform: scale(1); } 
     }
 
+    .welcome-icon { font-size: 60px; margin-bottom: 10px; animation: floatEmoji 2s ease-in-out infinite; position: relative; z-index: 10; }
+    @keyframes floatEmoji { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-15px) rotate(5deg); } }
+
+    .welcome-card h2 {
+      font-family: 'Playfair Display', serif; color: var(--accent-gold);
+      font-size: 30px; margin-bottom: 12px; position: relative; z-index: 10;
+      text-shadow: 0 2px 10px rgba(255, 215, 0, 0.5);
+    }
+    .welcome-card p {
+      font-size: 15px; color: #e2e8f0; line-height: 1.8; margin-bottom: 30px; position: relative; z-index: 10;
+    }
+    .welcome-btn {
+      width: 100%; padding: 16px; border-radius: 50px; border: none; position: relative; z-index: 100;
+      background: linear-gradient(135deg, #00d2ff, #3a7bd5); color: #fff;
+      font-weight: 700; font-size: 16px; cursor: pointer; transition: all 0.3s;
+      box-shadow: 0 8px 25px rgba(0, 210, 255, 0.4); text-transform: uppercase; letter-spacing: 1px;
+    }
+    .welcome-btn:hover { transform: translateY(-3px) scale(1.02); box-shadow: 0 15px 35px rgba(0, 210, 255, 0.6); }
+
+    /* VIEW SECTIONS */
+    .view-section {
+      display: none;
+      width: 100%;
+      max-width: 750px;
+      position: relative;
+      z-index: 10;
+      animation: floatUp 0.6s ease-out forwards;
+    }
+    .view-section.active { display: block; }
+
     @keyframes floatUp {
+      from { opacity: 0; transform: translateY(30px); }
       to { opacity: 1; transform: translateY(0); }
     }
 
-    .lock-icon {
-      font-size: 50px;
-      margin-bottom: 15px;
-      animation: pulseLock 2s infinite alternate;
+    /* MAIN CONTAINER (GLASS) */
+    .container-glass {
+      background: var(--glass-bg); backdrop-filter: blur(24px);
+      -webkit-backdrop-filter: blur(24px); border-radius: 28px;
+      border: 1px solid var(--glass-border); box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5);
+      padding: 45px 35px; width: 100%; margin-top: 20px;
     }
 
-    @keyframes pulseLock {
-      from { transform: scale(1); filter: drop-shadow(0 0 10px rgba(255,215,0,0.3)); }
-      to { transform: scale(1.1); filter: drop-shadow(0 0 20px rgba(255,215,0,0.8)); }
+    .header-badge {
+      display: inline-block; background: rgba(255, 255, 255, 0.15);
+      padding: 6px 16px; border-radius: 50px; font-size: 12px;
+      font-weight: 600; letter-spacing: 1px; text-transform: uppercase;
+      color: #ffeaa7; margin-bottom: 15px; border: 1px solid rgba(255, 255, 255, 0.2);
     }
 
     h1 {
-      font-family: 'Playfair Display', serif;
-      font-size: 32px;
-      font-weight: 700;
-      margin-bottom: 5px;
-      background: linear-gradient(to right, #fff, #ffeaa7);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
+      font-family: 'Playfair Display', serif; font-size: 32px; font-weight: 700;
+      margin-bottom: 6px; background: linear-gradient(to right, #ffffff, #ffeaa7);
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent; text-align: center;
     }
+    h2.subtitle { font-size: 16px; font-weight: 500; margin-bottom: 25px; color: #cbd5e1; text-align: center; }
+
+    .st-badge-container { margin: 25px 0; text-align: center; }
+    .st-badge {
+      display: inline-block; padding: 12px 30px; background: linear-gradient(135deg, #ffd700, #ff8e53);
+      color: #1a0836; font-family: 'Playfair Display', serif; font-size: 19px; font-weight: 700;
+      border-radius: 50px; box-shadow: 0 0 25px rgba(255, 215, 0, 0.6);
+      animation: pulseST 2s infinite alternate; text-align: center;
+    }
+    @keyframes pulseST {
+      from { transform: scale(1); box-shadow: 0 0 15px rgba(255, 215, 0, 0.4); }
+      to { transform: scale(1.06); box-shadow: 0 0 30px rgba(255, 215, 0, 0.9); }
+    }
+
+    p.instruction {
+      font-size: 14px; margin-bottom: 30px; background: rgba(0, 0, 0, 0.28);
+      padding: 18px 20px; border-radius: 16px; line-height: 1.7;
+      border-left: 4px solid var(--accent-coral); text-align: left; color: #f1f5f9;
+    }
+
+    .btn-group { display: flex; flex-direction: column; gap: 14px; margin-bottom: 35px; }
+    .msg-button {
+      padding: 17px 24px; font-size: 15px; font-family: 'Poppins', sans-serif; font-weight: 600;
+      color: #1e293b; background: linear-gradient(135deg, #ffffff 0%, #f8fafc 100%);
+      border: none; border-radius: 16px; cursor: pointer; transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+      box-shadow: 0 6px 20px rgba(0, 0, 0, 0.18); display: flex; align-items: center; justify-content: space-between;
+      position: relative; overflow: hidden;
+    }
+    .msg-button::before {
+      content: ''; position: absolute; top: 0; left: 0; width: 5px; height: 100%;
+      background: var(--accent-coral); opacity: 0; transition: opacity 0.3s ease;
+    }
+    .msg-button:hover:not(:disabled) {
+      transform: translateY(-3px) scale(1.01); box-shadow: 0 12px 30px rgba(255, 255, 255, 0.28);
+      background: linear-gradient(135deg, #ffffff 0%, #fff3cd 100%);
+    }
+    .msg-button:hover:not(:disabled)::before { opacity: 1; }
+    .msg-button:disabled {
+      background: rgba(255, 255, 255, 0.08); color: rgba(255, 255, 255, 0.35);
+      border: 1px solid rgba(255, 255, 255, 0.08); cursor: not-allowed; box-shadow: none;
+    }
+
+    .regards-section {
+      border-top: 1px solid rgba(255, 255, 255, 0.18); padding-top: 25px;
+      display: flex; flex-direction: column; align-items: center; gap: 6px; text-align: center;
+    }
+    .regards-section p { font-size: 13px; color: #cbd5e1; }
+    .regards-section h3 { font-family: 'Playfair Display', serif; font-size: 18px; color: #ffeaa7; font-weight: 700; }
+    .location-tag { font-size: 12px; background: rgba(255, 255, 255, 0.1); padding: 4px 14px; border-radius: 20px; color: #94a3b8; margin-top: 4px; }
+
+    /* FOOTER TOGGLE VIEWS / THEME */
+    .fixed-bottom-bar {
+      position: fixed; bottom: 0; left: 0; width: 100%; background: rgba(15, 23, 42, 0.95);
+      backdrop-filter: blur(15px); border-top: 1px solid rgba(255,255,255,0.1);
+      padding: 12px 20px; z-index: 9000; display: flex; flex-direction: column; align-items: center; gap: 8px;
+    }
+    .toggle-btns { display: flex; gap: 10px; justify-content: center; flex-wrap: wrap; }
+    .toggle-btn {
+      background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.2);
+      color: #fff; padding: 8px 16px; border-radius: 20px; font-size: 13px; cursor: pointer; transition: 0.3s; font-family: 'Poppins', sans-serif;
+    }
+    .toggle-btn.active { background: var(--accent-cyan); border-color: var(--accent-cyan); font-weight: 600; color: #000; }
+    .toggle-btn:hover:not(.active) { background: rgba(255,255,255,0.2); }
+    .update-text { font-size: 11px; color: #94a3b8; font-style: italic; }
+
+    /* POPUP / MODAL MESSAGES */
+    .popup {
+      display: none; position: fixed; inset: 0; background-color: rgba(15, 23, 42, 0.85);
+      backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); z-index: 10000;
+      overflow-y: auto; padding: 20px; animation: fadeIn 0.3s ease;
+    }
+    .popup-content {
+      background: linear-gradient(145deg, #1e293b, #0f172a); margin: 5% auto; padding: 38px 34px;
+      border-radius: 26px; max-width: 580px; width: 100%; position: relative; color: #f8fafc;
+      border: 1px solid rgba(255, 255, 255, 0.18); box-shadow: 0 25px 60px rgba(0,0,0,0.7); text-align: left;
+      animation: zoomInPopup 0.45s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    @keyframes zoomInPopup { from { transform: scale(0.9) translateY(20px); opacity: 0; } to { transform: scale(1) translateY(0); opacity: 1; } }
     
-    .dual-lang {
-      font-size: 13px;
-      color: #94a3b8;
-      margin-bottom: 25px;
-      font-style: italic;
+    .popup-content h2 {
+      font-family: 'Playfair Display', serif; color: #ff8e53; margin-top: 0;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.12); padding-bottom: 15px;
+      margin-bottom: 20px; font-size: 23px; font-weight: 700; display: flex; align-items: center; gap: 10px;
+    }
+    .popup-text-container { font-size: 15px; line-height: 1.85; color: #e2e8f0; min-height: 80px; white-space: pre-wrap; margin-bottom: 15px;}
+    .cursor {
+      display: inline-block; width: 7px; height: 18px; background-color: #ff8e53;
+      margin-left: 4px; vertical-align: middle; animation: blink 0.8s infinite;
+    }
+    @keyframes blink { 0%, 100% { opacity: 1; } 50% { opacity: 0; } }
+
+    .close {
+      position: absolute; top: 20px; right: 24px; color: #94a3b8; font-size: 30px; font-weight: bold;
+      cursor: pointer; transition: all 0.25s ease; width: 40px; height: 40px; display: flex;
+      align-items: center; justify-content: center; border-radius: 50%; background: rgba(255, 255, 255, 0.05);
+    }
+    .close:hover { color: #ff6b81; background: rgba(255, 107, 129, 0.15); transform: rotate(90deg); }
+
+    .skip-typing-btn {
+      display: inline-block; margin-top: 5px; margin-bottom: 15px; font-size: 12px; color: #94a3b8;
+      background: transparent; border: none; text-decoration: underline; cursor: pointer; font-family: 'Poppins', sans-serif;
+    }
+    .skip-typing-btn:hover { color: #ff8e53; }
+
+    /* Extra HTML Container (Quiz & Lyrics fade in) */
+    #popup-extra-html { display: none; animation: fadeIn 0.8s ease; }
+
+    /* Quiz Styles */
+    .quiz-btn {
+      display: block; width: 100%; text-align: left; background: rgba(255,255,255,0.08);
+      border: 1px solid rgba(255,255,255,0.2); color: #fff; padding: 12px 15px;
+      margin-bottom: 10px; border-radius: 10px; cursor: pointer; transition: 0.3s;
+      font-family: 'Poppins', sans-serif; font-size: 14px; line-height: 1.5;
+    }
+    .quiz-btn:hover { background: rgba(255, 255, 255, 0.15); border-color: var(--accent-cyan); transform: translateX(5px); }
+    .quiz-hint { font-size: 12px; color: #94a3b8; font-style: italic; margin-top: 15px; text-align: center; }
+
+    /* Lyrics 2 Column */
+    .lyrics-box {
+      column-count: 2; column-gap: 20px; font-size: 13px; font-style: italic; color: #cbd5e1;
+      background: rgba(0,0,0,0.2); padding: 15px; border-radius: 12px; margin: 15px 0; line-height: 1.6;
     }
 
-    h2.subtitle {
-      font-size: 16px;
-      font-weight: 400;
-      color: #cbd5e1;
-      margin-bottom: 25px;
+    .yt-btn {
+      display: inline-block; margin-top: 10px; width: 100%; background: linear-gradient(135deg, #ff0000, #cc0000);
+      color: white; padding: 12px; font-size: 14px; font-weight: 600; border: none; border-radius: 12px;
+      text-transform: uppercase; letter-spacing: 1.2px; cursor: pointer; transition: all 0.3s ease; text-align: center;
+      text-decoration: none; box-shadow: 0 8px 25px rgba(255, 0, 0, 0.35); font-family: 'Poppins', sans-serif;
     }
+    .yt-btn:hover { background: linear-gradient(135deg, #ff1a1a, #e60000); transform: translateY(-3px); color: white;}
 
-    .msg-box {
-      background: rgba(255,255,255,0.05);
-      border-left: 4px solid var(--accent-coral);
-      padding: 20px;
-      border-radius: 12px;
-      text-align: left;
-      font-size: 14px;
-      line-height: 1.6;
-      color: #e2e8f0;
-      margin-bottom: 25px;
+    /* ARTICLE VIEW STYLES */
+    .unesa-frame {
+      width: 100%; height: 220px; border-radius: 20px; overflow: hidden; position: relative;
+      border: 2px solid rgba(255,255,255,0.2); margin-bottom: 30px; box-shadow: 0 10px 30px rgba(0,0,0,0.4);
     }
+    .unesa-frame img { width: 100%; height: 100%; object-fit: cover; filter: brightness(0.85); transition: 0.5s; }
+    .unesa-frame:hover img { transform: scale(1.03); }
+    .unesa-caption {
+      position: absolute; bottom: 0; left: 0; right: 0;
+      background: linear-gradient(to top, rgba(0,0,0,0.8), transparent);
+      padding: 15px 20px; text-align: left; font-size: 13px; color: #ffeaa7; font-weight: 500;
+    }
+    .section-card {
+      background: rgba(255, 255, 255, 0.05); border-left: 4px solid var(--accent-cyan);
+      padding: 22px; border-radius: 16px; margin-bottom: 25px; text-align: left; font-size: 15px;
+      line-height: 1.8; color: #e2e8f0; border-top: 1px solid rgba(255,255,255,0.05);
+      border-right: 1px solid rgba(255,255,255,0.05); border-bottom: 1px solid rgba(255,255,255,0.05);
+    }
+    .section-card.gold-border { border-left-color: var(--accent-gold); background: rgba(255, 215, 0, 0.04); }
+    .section-card.coral-border { border-left-color: var(--accent-coral); background: rgba(255, 107, 129, 0.04); }
+    .section-title { font-family: 'Playfair Display', serif; font-size: 18px; color: #ffeaa7; margin-bottom: 10px; font-weight: 700; }
 
-    .bible-verse {
-      font-style: italic;
-      color: #ffeaa7;
-      margin-top: 15px;
-      display: block;
-      font-weight: 500;
-      border-top: 1px solid rgba(255,255,255,0.1);
-      padding-top: 10px;
-    }
+    @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
 
-    .countdown-box {
-      display: flex;
-      justify-content: center;
-      gap: 15px;
-      margin-bottom: 30px;
-    }
-
-    .time-unit {
-      background: rgba(0, 0, 0, 0.4);
-      border: 1px solid rgba(255, 255, 255, 0.1);
-      padding: 15px 10px;
-      border-radius: 15px;
-      min-width: 80px;
-      box-shadow: 0 10px 20px rgba(0,0,0,0.3);
-    }
-
-    .time-val {
-      font-size: 28px;
-      font-weight: 700;
-      color: var(--accent-cyan);
-      display: block;
-      font-family: 'Playfair Display', serif;
-    }
-
-    .time-label {
-      font-size: 11px;
-      text-transform: uppercase;
-      letter-spacing: 1px;
-      color: #94a3b8;
-      margin-top: 5px;
-      display: block;
-    }
-
-    .action-grid {
-      display: flex;
-      flex-direction: column;
-      gap: 12px;
-    }
-
-    .btn-action {
-      background: linear-gradient(135deg, #00d2ff, #3a7bd5);
-      color: white;
-      border: none;
-      padding: 15px 20px;
-      font-family: 'Poppins', sans-serif;
-      font-size: 15px;
-      font-weight: 600;
-      border-radius: 15px;
-      cursor: pointer;
-      transition: all 0.3s;
-      box-shadow: 0 6px 15px rgba(0, 210, 255, 0.25);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 10px;
-    }
-
-    .btn-action:hover {
-      transform: translateY(-2px);
-      box-shadow: 0 8px 20px rgba(0, 210, 255, 0.4);
-    }
-
-    .footer-text {
-      margin-top: 35px;
-      font-size: 13px;
-      color: #94a3b8;
-      line-height: 1.7;
-    }
-    
-    .footer-highlight {
-      color: #ffeaa7;
-      font-weight: 500;
-    }
-
-    .footer-update {
-      margin-top: 15px;
-      font-size: 11px;
-      color: #64748b;
-      padding-top: 15px;
-      border-top: 1px dashed rgba(255,255,255,0.1);
-    }
-
-    /* Modal / Pop-up Styling */
-    .modal-overlay {
-      position: fixed;
-      inset: 0;
-      background: rgba(0,0,0,0.85);
-      backdrop-filter: blur(10px);
-      z-index: 999;
-      display: none;
-      align-items: center;
-      justify-content: center;
-      padding: 20px;
-      opacity: 0;
-      transition: opacity 0.3s;
-    }
-
-    .modal-overlay.active {
-      display: flex;
-      opacity: 1;
-    }
-
-    .modal-card {
-      background: linear-gradient(145deg, #1e293b, #0f172a);
-      border: 1px solid rgba(255,255,255,0.15);
-      border-radius: 20px;
-      padding: 30px;
-      width: 100%;
-      max-width: 450px;
-      text-align: left;
-      position: relative;
-      transform: scale(0.9);
-      transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-    }
-
-    .modal-overlay.active .modal-card { transform: scale(1); }
-
-    .modal-card h3 {
-      font-size: 20px;
-      color: #ffeaa7;
-      margin-bottom: 20px;
-      border-bottom: 1px solid rgba(255,255,255,0.1);
-      padding-bottom: 10px;
-      display: flex;
-      align-items: center;
-      gap: 10px;
-    }
-
-    .close-modal {
-      position: absolute;
-      top: 15px;
-      right: 20px;
-      font-size: 24px;
-      color: #94a3b8;
-      cursor: pointer;
-      background: none;
-      border: none;
-    }
-    .close-modal:hover { color: #ff6b81; }
-
-    /* Checklist Specifics */
-    .check-item {
-      display: none; 
-      align-items: center;
-      margin-bottom: 15px;
-      cursor: pointer;
-      font-size: 14px;
-      color: #cbd5e1;
-      background: rgba(255,255,255,0.05);
-      padding: 12px;
-      border-radius: 12px;
-      border: 1px solid rgba(255,255,255,0.05);
-      animation: fadeInItem 0.5s ease forwards;
-    }
-    @keyframes fadeInItem {
-      from { opacity: 0; transform: translateX(-20px); }
-      to { opacity: 1; transform: translateX(0); }
-    }
-    .check-box {
-      width: 22px; height: 22px; border: 2px solid #3a7bd5; border-radius: 6px;
-      margin-right: 12px; display: flex; align-items: center; justify-content: center; flex-shrink: 0;
-    }
-    .check-item.done .check-box { background: #00e676; border-color: #00e676; }
-    .check-item.done .check-box::after { content: '✓'; color: white; font-weight: bold; }
-    .check-item.done span { text-decoration: line-through; color: #64748b; }
-    
-    .btn-next {
-      background: linear-gradient(135deg, #ff6b81, #ff8e53); color: white; border: none; padding: 12px 20px;
-      width: 100%; border-radius: 12px; font-weight: 600; margin-top: 15px; cursor: pointer; display: none;
-    }
-    #success-msg { display: none; text-align: center; color: #00e676; font-weight: 600; margin-top: 20px; font-size: 15px; }
-
-    /* Playlist Specifics */
-    .song-box {
-      background: rgba(0,0,0,0.2);
-      border: 1px solid rgba(255,255,255,0.1);
-      border-radius: 12px;
-      padding: 15px;
-      margin-bottom: 15px;
-    }
-    .song-title { font-weight: 600; font-size: 15px; color: #00d2ff; margin-bottom: 5px; }
-    .song-desc { font-size: 13px; color: #cbd5e1; line-height: 1.5; margin-bottom: 12px; }
-    .btn-yt {
-      background: #ff0000; color: white; border: none; padding: 8px 15px;
-      border-radius: 8px; font-size: 12px; font-weight: 600; cursor: pointer; text-decoration: none; display: inline-block;
-    }
-    .btn-yt:hover { background: #cc0000; }
-
-    /* Intermezzo Specifics */
-    .intermezzo-text {
-      font-size: 15px;
-      line-height: 1.7;
-      color: #e2e8f0;
-    }
-    .intermezzo-text b { color: #ff8e53; }
-
-    @media (max-width: 500px) {
-      .time-unit { min-width: 65px; padding: 10px 5px; }
-      .time-val { font-size: 22px; }
-      h1 { font-size: 24px; }
-      .container { padding: 30px 20px; }
+    @media (max-width: 600px) {
+      .container-glass { padding: 30px 20px; }
+      h1 { font-size: 26px; }
+      .welcome-card { padding: 30px 20px; }
+      .lyrics-box { column-count: 1; }
     }
   </style>
 </head>
@@ -335,273 +310,507 @@
 
 <canvas id="particle-canvas"></canvas>
 
-<div class="container">
-  <div class="lock-icon">🎓🔒</div>
-  <h1>Pesan Kemenangan Belum Dapat Dibuka</h1>
-  <div class="dual-lang">The Victory Message cannot be opened yet</div>
-  
-  <h2 class="subtitle">Nathanael Gemayel Marpaung, S.T. (Candidate)</h2>
-
-  <div class="msg-box">
-    <b>[ID]</b> Pesan rahasia ini belum bisa dibuka, Lae! Sistem mengunci halaman ini secara otomatis hingga hari medan pertempuranmu (Sidang) tiba. Fokus dulu siapkan dirimu sebaik mungkin!
-    <br><br>
-    <b>[EN]</b> This secret message cannot be unlocked yet, brother! The system has automatically locked this page until the day of your battlefield (Thesis Defense). Focus on preparing yourself!
-    
-    <span class="bible-verse">
-      "Kuda diperlengkapi untuk hari peperangan, tetapi kemenangan ada di tangan TUHAN."<br>
-      <span style="font-size: 11px;">"The horse is made ready for the day of battle, but victory rests with the LORD."</span><br>
-      — Amsal 21:31 / Proverbs 21:31
-    </span>
-  </div>
-
-  <!-- Countdown Timer -->
-  <div class="countdown-box">
-    <div class="time-unit">
-      <span class="time-val" id="days">00</span>
-      <span class="time-label">Hari / Days</span>
-    </div>
-    <div class="time-unit">
-      <span class="time-val" id="hours">00</span>
-      <span class="time-label">Jam / Hrs</span>
-    </div>
-    <div class="time-unit">
-      <span class="time-val" id="mins">00</span>
-      <span class="time-label">Menit / Mins</span>
-    </div>
-    <div class="time-unit">
-      <span class="time-val" id="secs">00</span>
-      <span class="time-label">Detik / Secs</span>
-    </div>
-  </div>
-
-  <div class="action-grid">
-    <button class="btn-action" onclick="openModal('modal-checklist')">📋 Centang Persiapan Sidang</button>
-    <button class="btn-action" onclick="openModal('modal-playlist')">🎧 Dengerin Lagu Penenang Jiwa</button>
-    <button class="btn-action" onclick="openModal('modal-intermezzo')">💬 Lek, lagi takut kah?</button>
-  </div>
-
-  <div class="footer-text">
-    Menunggu Selesai sidang: <b>Kamis, 20 Agustus 2026 Pukul 12.00 WIB</b><br>
-    <i>Awaiting Defense: Thursday, August 20, 2026 at 12:00 AM (UTC+7)</i><br><br>
-    Dari Laemu, <b>Glenn</b> — Jakarta, Indonesia<br><br>
-    <span class="footer-highlight">⚠️ Jika ada kendala mengakses ini, harap kabari ke Nantulang ya, biar nanti Nantulang yang kabarin aku.</span>
-    
-    <div class="footer-update">
-      Web ini terakhir aku update pada: Kamis, 19 Agustus 2026 pukul 05:30 WIB
-    </div>
-  </div>
-</div>
-
-<!-- ==============================================
-     MODAL 1: WELCOME ALERTS
-=============================================== -->
-<div class="modal-overlay" id="modal-welcome">
-  <div class="modal-card" style="text-align: center;">
-    <button class="close-modal" onclick="closeModal('modal-welcome')">&times;</button>
-    <div style="font-size: 40px; margin-bottom: 15px;">👋</div>
-    <h3 style="justify-content: center; border:none; margin-bottom:10px;">Haloo Lae Nathanael!</h3>
-    <p style="font-size: 14px; color: #cbd5e1; line-height: 1.6; margin-bottom: 20px;">
-      Harap cek web ini secara berkala ya, Lae! Karena Pesan Kemenangan yang sebenarnya baru akan otomatis terbuka di hari <b>Kamis</b> nanti.<br><br>
-      Sembari nunggu, mari eksplor beberapa hal yang telah aku sajikan di website ini. Semangat terus persiapannya, Lae!
+<!-- WELCOME POPUP MODAL -->
+<div id="welcome-modal" class="welcome-modal">
+  <div class="welcome-card">
+    <div class="welcome-icon">🎓🎊</div>
+    <h2>WOOHOO! <br>Pesan Terbuka!</h2>
+    <p>
+      Selamat hari sidang, <b>Lae Nathanael Gemayel Marpaung, S.T.!</b><br><br>
+      Gembok digital ini akhirnya terbuka. Silakan nikmati 7 kartu pesan khusus yang sudah dirangkai spesial untuk merayakan perjuangan panjangmu.
     </p>
-    <button class="btn-action" style="width: 100%; margin: 0;" onclick="closeModal('modal-welcome')">Oke, Siap! 🚀</button>
+    <button class="welcome-btn" onclick="closeWelcomeModal()">🚀 MULAI BUKA PESAN</button>
   </div>
 </div>
 
-<!-- ==============================================
-     MODAL 2: CHECKLIST
-=============================================== -->
-<div class="modal-overlay" id="modal-checklist">
-  <div class="modal-card">
-    <button class="close-modal" onclick="closeModal('modal-checklist')">&times;</button>
-    <h3>📋 Persiapan Medan Tempur</h3>
-    <div style="font-size: 12px; color: #94a3b8; margin-top: -15px; margin-bottom: 20px; font-style: italic;">
-      Battlefield Preparation Checklist (5/5)
+<!-- VIEW 1: INTERACTIVE CARDS (Mode Kartu / Sebelum Terbuka Penuh) -->
+<div id="view-cards" class="view-section active">
+  <div class="container-glass">
+    <div style="text-align: center;">
+      <div class="header-badge">✦ Spesial Kemenangan Sidang ✦</div>
+      <h1>Selamat Sidang, Lae!</h1>
+      <h2 class="subtitle">Nathanael Gemayel Marpaung, S.T.</h2>
     </div>
-    
-    <div class="check-item" id="item-1" onclick="checkAndNext(1)">
-      <div class="check-box"></div><span>Udah siapin PPT & Draft Skripsi yang rapi? (Prepared the PPT & Draft?)</span>
+
+    <!-- Animated S.T. Badge Highlight -->
+    <div class="st-badge-container">
+      <div class="st-badge">✨ NATHANAEL GEMAYEL MARPAUNG, S.T. ✨</div>
     </div>
-    <div class="check-item" id="item-2" onclick="checkAndNext(2)">
-      <div class="check-box"></div><span>Udah konfirmasi dan ingetin Dosen Penguji? (Reminded the Examiners?)</span>
+
+    <p class="instruction">
+      Ada <b>7 kartu pesan</b> yang merepresentasikan perjalanan panjang Lae. Buka satu per satu secara berurutan ya! Pesan ini diawali satu pertanyaan lucu di kartu pertama. Pesan selanjutnya baru dapat terbuka setelah Pesan pertama telah dijawab.
+    </p>
+
+    <div class="btn-group">
+      <button id="btn1" class="msg-button" onclick="showPopup(1)">
+        <span>Kartu 1 : Kuis Intermezzo 🏗️</span>
+        <span class="btn-icon">▶</span>
+      </button>
+      <button id="btn2" class="msg-button" onclick="showPopup(2)" disabled>
+        <span>Kartu 2 : Terkunci 🔒</span>
+        <span class="btn-icon">🔒</span>
+      </button>
+      <button id="btn3" class="msg-button" onclick="showPopup(3)" disabled>
+        <span>Kartu 3 : Terkunci 🔒</span>
+        <span class="btn-icon">🔒</span>
+      </button>
+      <button id="btn4" class="msg-button" onclick="showPopup(4)" disabled>
+        <span>Kartu 4 : Terkunci 🔒</span>
+        <span class="btn-icon">🔒</span>
+      </button>
+      <button id="btn5" class="msg-button" onclick="showPopup(5)" disabled>
+        <span>Kartu 5 : Terkunci 🔒</span>
+        <span class="btn-icon">🔒</span>
+      </button>
+      <button id="btn6" class="msg-button" onclick="showPopup(6)" disabled>
+        <span>Kartu 6 : Terkunci 🔒</span>
+        <span class="btn-icon">🔒</span>
+      </button>
+      <button id="btn7" class="msg-button" onclick="showPopup(7)" disabled>
+        <span>Kartu 7 : Terkunci 🔒</span>
+        <span class="btn-icon">🔒</span>
+      </button>
     </div>
-    <div class="check-item" id="item-3" onclick="checkAndNext(3)">
-      <div class="check-box"></div><span>Udah pelajari materi utk presentasi? (Mastered the presentation material?)</span>
-    </div>
-    <div class="check-item" id="item-4" onclick="checkAndNext(4)">
-      <div class="check-box"></div><span>Udah beli dan siapin Selempang Kebanggaan? (Prepared the Graduation Sash?)</span>
-    </div>
-    <div class="check-item" id="item-5" onclick="checkAndNext(5)">
-      <div class="check-box"></div><span>Udah berdoa dan berserah penuh sama Tuhan? (Prayed and surrendered to God?)</span>
-    </div>
-    
-    <button class="btn-next" id="btn-next" onclick="showNextItem()">Siap! Lanjut yang lain ➡️</button>
-    <div id="success-msg">
-      Yeeeey! 🔥💯<br>Udah SIAP BANGET buat sidang!<br>Maju tak gentar, Tuhan Yesus besertamu, Lae! Gelar S.T. udah di depan mata!
+
+    <div class="regards-section">
+      <p>Teriring doa, rasa bangga, dan salam hangat dari:</p>
+      <h3>Laemu, Glenn.</h3>
+      <div class="location-tag">Dari Jakarta, Indonesia</div>
     </div>
   </div>
 </div>
 
-<!-- ==============================================
-     MODAL 3: PLAYLIST ROHANI
-=============================================== -->
-<div class="modal-overlay" id="modal-playlist">
-  <div class="modal-card">
-    <button class="close-modal" onclick="closeModal('modal-playlist')">&times;</button>
-    <h3>🎧 Playlist Penenang Jiwa</h3>
-    
-    <div class="song-box">
-      <div class="song-title">1. Kidung Jemaat 410 - Tenanglah Kini Hatiku</div>
-      <div class="song-desc">
-        Lagu ini mengingatkan bahwa sedahsyat apa pun ombaknya (atau ketegangan di ruang sidang nanti), Tuhan Yesus yang pegang kendali. Hati kita bisa tenang karena jangkar iman kita tertambat aman pada-Nya.
+<!-- VIEW 2: FULL ARTICLE (Versi Website / Setelah Terbuka) -->
+<div id="view-article" class="view-section">
+  <div class="container-glass">
+    <div style="text-align: center;">
+      <div class="header-badge">✦ Milestone Tercapai ✦</div>
+      <h1>Selamat Menuntaskan Fondasi Terberat, Lae!</h1>
+      <h2 class="subtitle">Nathanael Gemayel Marpaung, S.T. (Unofficially Graduate)</h2>
+    </div>
+
+    <div class="unesa-frame">
+      <img src="https://images.unsplash.com/photo-1541339907198-e08756dedf3f?q=80&w=1200&auto=format&fit=crop" alt="Kampus UNESA">
+      <div class="unesa-caption">
+        🎓 "Akhirnya log out juga dari kampus ini..."
       </div>
-      <a href="https://www.youtube.com/watch?v=cZDZtz4D-Mg&list=RDcZDZtz4D-Mg&start_radio=1" target="_blank" class="btn-yt">▶ Putar di YouTube</a>
     </div>
 
-    <div class="song-box">
-      <div class="song-title">2. PKJ 241 - Tak 'Ku Tahu 'Kan Hari Esok</div>
-      <div class="song-desc">
-        Lagu ini ngajarin kita soal penyerahan penuh. Kita nggak perlu tahu persis pertanyaan apa yang bakal keluar dari penguji besok, yang penting kita tahu Siapa yang memegang hari esok kita.
+    <div class="section-card">
+      <div class="section-title">🎓 Log Out & Sebuah Proses Panjang</div>
+      Selamat hari sidang! Statusnya sekarang <i>unofficially sarjana</i>, karena masih ada revisi yang harus diurus. Tapi akhirnya log out juga dari kampus tercinta ini.<br><br>Langkah panjang yang tak mudah, ujian dan waktu yang mungkin terasa sedikit lebih lama dari yang lain, semuanya telah mengantarkan Lae sampai di garis akhir dengan kepala tegak.
+    </div>
+
+    <div class="section-card gold-border">
+      <div class="section-title">👨‍🎓 Sarjana Pertama & Kebanggaan Keluarga</div>
+      Jujur, kita memang masih kurang lama kenalan dan akrab. Kenal dari Tulang dan Nantulang. Tapi Lae, aku bangga samamu.<br><br>Aku ingat suatu kali melihat Lae menangis di momen partangiangan. Aku tahu, di balik tangis itu ada beban berat, omongan orang, dan ekspektasi soal kelulusan. Tapi Lae, Lae membuktikan bahwa Lae mampu menjadi sarjana pertama dari Keluarga Lae. Lae tetap bertahan di tengah badai, di tengah ucapan yang mungkin udah datang bertubi-tubi.<br><br>Lae keren, karena sejatinya kemenangan bukan pada mereka yang cepat, tapi kepada mereka yang masih setia untuk bertahan. Selamat kuucapkan pada Lae. Aku yakin, dari pomparan Ompung Juangga, Lae adalah Sarjana Teknik Pertama. Seluruh keluarga pasti turut berbangga!
+    </div>
+
+    <div class="section-card coral-border">
+      <div class="section-title">🎵 Renungan Waktu Tuhan</div>
+      Lagu ini mengingatkan kita bahwa apa pun hasil dan proses panjang hari ini, semuanya berada dalam rancangan tangan Tuhan. Tuhan tidak pernah datang terlalu cepat atau terlalu lambat. Ia selalu datang tepat pada waktu-Nya, membawa keindahan dan kemenangan bagi anak-anak-Nya yang setia berproses.
+      <div class="lyrics-box">
+        Bapa Engkau mengenalku<br>
+        Lebih dari siapapun<br>
+        Engkau tahu ceritaku<br>
+        Dan isi hatiku<br>
+        ‘Tak peduli masa lalu<br>
+        Engkau tetap memilihku<br>
+        Ubahkanku, sempurnakan<br>
+        Jadi karya yang indah<br>
+        <br>
+        <b>Chorus:</b><br>
+        Kini aku percaya<br>
+        Tiada yang mustahil bagi-Mu<br>
+        Kuasa-Mu, kuatkanku<br>
+        Dasar kuberharap<br>
+        Kini aku berserah<br>
+        Pada rancangan-Mu bagiku<br>
+        Kuikuti panggilan-Mu<br>
+        ‘Kukan setia<br>
+        Sampai akhir hidupku.
       </div>
-      <a href="https://www.youtube.com/watch?v=b9EahuGtnwk&list=RDb9EahuGtnwk&start_radio=1" target="_blank" class="btn-yt">▶ Putar di YouTube</a>
+      <div style="font-size: 14px; font-weight: bold; margin-top: 15px; color: #ffeaa7;">
+        Pengkhotbah 3:11<br>
+        <i>"Ia membuat segala sesuatu indah pada waktu-Nya..."</i>
+      </div>
+      <a href="https://www.youtube.com/watch?v=29jd_ji_fww" target="_blank" class="yt-btn" style="width: auto; padding: 10px 20px; display: inline-block; margin-top: 15px;">▶ Putar Lagu di YouTube</a>
+    </div>
+
+    <div class="section-card">
+      <div class="section-title">🙏 Poda & Kekuatan dari Atas</div>
+      Sebagai bekal melangkah ke dunia nyata, ingatlah petuah bijak ini:<br><br>
+      <b>Poda Batak:</b><br>
+      "Eme sitiktik golang-golang, bahen huruhuru tu parbuean. Saut ma gabe jala horas, gabe tumpuan ni sangkap na uli." (Kesungguhan hati dan kerja keras membuahkan hasil yang manis dan membawa kebaikan).<br><br>
+      <b>Poda Jawa:</b><br>
+      "Alon-alon asal kelakon." (Biar pelan yang penting selamat/tercapai. Tidak perlu terburu-buru asal tujuannya terwujud dengan baik).<br><br>
+      Tetap berpelayanan setelah ini ya Lae. Jangan lupa bahwa sejauh ini Lae bertahan bukan karena kekuatan Lae sendiri, tapi karena rahmat dan pertolongan Tuhan. Tuhan juga yang akan menolong Lae untuk chapter berikutnya.
+    </div>
+    
+    <div class="section-card gold-border">
+      <div class="section-title">💼 Filosofi Dompet Baru</div>
+      Oh ya, ada titipan hadiah dompet buat Lae. Kenapa dompet? Karena dompet itu melambangkan rezeki dan tempat menyimpan hasil jerih payah. Semoga dengan gelar baru dan dompet baru ini, rezeki Lae makin lancar, pintu berkat makin terbuka lebar, dan gampang dapet kerjaan yang mantap! Amin!
+    </div>
+
+    <div class="section-card">
+      <div class="section-title">🚀 Chapter Berikutnya & Doa Penutup</div>
+      Gak ada yang tahu, manatau nanti Lae kerja di Jakarta atau takdir mempertemukan kita lagi di proyek-proyek besar selanjutnya, kita bisa ngopi bareng, bernostalgia, dan membahas masa-masa perjuangan kuliah ini, yakan?<br><br>
+      Sebagai penutup, doa terbaik kuucapkan untukmu:<br>
+      Semoga Tuhan Yesus senantiasa memberkati setiap langkah, karier, dan karya konstruksi yang akan Lae bangun ke depan. Jadilah berkat di manapun Lae berada, sukses selalu, dan tetaplah menjadi Engineer yang berintegritas!<br><br>
+      Semangat terus, Lae Nathanael! Selamat menyandang gelar baru secara resmi:<br>
+      <b>Nathanael Gemayel Marpaung, S.T.</b><br><br>
+      Gelar ini bukan sekadar tinta hitam di atas selembar ijazah, melainkan bukti nyata dari sebuah ketekunan yang menolak menyerah pada keadaan. Banggalah pada pencapaian luar biasa ini, Lae!
+    </div>
+
+    <div class="regards-section" style="margin-top: 30px;">
+      <p>Teriring doa dan bangga dari:</p>
+      <h3>Laemu, Glenn.</h3>
+      <div class="location-tag">Dari Jakarta, Indonesia</div>
     </div>
   </div>
 </div>
 
-<!-- ==============================================
-     MODAL 4: INTERMEZZO
-=============================================== -->
-<div class="modal-overlay" id="modal-intermezzo">
-  <div class="modal-card">
-    <button class="close-modal" onclick="closeModal('modal-intermezzo')">&times;</button>
-    <h3>💬 Lek, lagi takut kah?</h3>
-    <div class="intermezzo-text">
-      Jujur aja, pasti ada rasa deg-degan atau overthinking kan sekarang?<br><br>
-      Wajar banget, Lae! Sidang akhir itu emang medannya para pejuang. Tapi coba ingat lagi deh gimana perjuanganmu, begadangmu, ngerjain revisian berbulan-bulan dari Bab 1 sampai Bab 5. <b>Lae udah berjalan sejauh ini!</b><br><br>
-      Gelar S.T. itu udah Tuhan persiapkan di garis finish. Tarik napas yang panjang, minum air putih, dan tenangkan pikiran. Dosen penguji cuma butuh melihat keyakinanmu atas apa yang udah Lae tulis.<br><br>
-      <i>You've got this, Lae! Maju tak gentar!</i> 🛡️⚔️
+<!-- BOTTOM TOGGLE BAR -->
+<div class="fixed-bottom-bar">
+  <div class="toggle-btns">
+    <button id="tab-cards" class="toggle-btn active" onclick="switchView('cards')">Versi Menu Kartu</button>
+    <button id="tab-article" class="toggle-btn" onclick="switchView('article')">Versi Artikel Full</button>
+    <button id="theme-galaxy" class="toggle-btn active" onclick="switchTheme('galaxy')">🌌 Galaxy</button>
+    <button id="theme-ocean" class="toggle-btn" onclick="switchTheme('ocean')">🌊 Ocean</button>
+  </div>
+  <div class="update-text">Website ini di update pada: 20 Agustus 2026. Jika mengalami kendala dalam membuka pesan, harap kabari aku melalui nantulang ya lae.</div>
+</div>
+
+<!-- MODAL / POPUP MESSAGES -->
+<div id="popup" class="popup">
+  <div class="popup-content">
+    <span class="close" onclick="closePopup()">&times;</span>
+    <h2 id="popup-title">Judul</h2>
+    <div class="popup-text-container">
+      <span id="popup-text"></span><span id="cursor" class="cursor"></span>
     </div>
+    <button id="skip-btn" class="skip-typing-btn" onclick="skipTyping()">[Tampilkan Semua Teks Langsung]</button>
+    
+    <!-- Extra Content that fades in after typing (Quiz, Lyrics, Buttons) -->
+    <div id="popup-extra-html"></div>
   </div>
 </div>
 
 <script>
-  // Tampilkan Welcome Popup saat web dibuka
-  window.onload = function() {
-    initParticles();
-    setTimeout(() => { openModal('modal-welcome'); }, 800);
+  let currentOpen = 1;
+  let i = 0;
+  let txt = '';
+  let speed = 25;
+  let typingTimeout;
+  let isTyping = false;
+  let currentActiveOption = 1;
+  let extraHtmlContent = "";
+  let isArticleUnlocked = false; // Flag to track if all cards are open
+
+  const btnNames = [
+    "Kartu 1 : Intermezzo tipis 🏗️",
+    "Kartu 2 : Log Out & Proses Panjang 🎓",
+    "Kartu 3 : Kebanggaan Keluarga 👨‍🎓",
+    "Kartu 4 : Renungan & Waktu Tuhan 🎵",
+    "Kartu 5 : Poda & Kekuatan dari Atas 🙏",
+    "Kartu 6 : Filosofi Dompet Baru 💼",
+    "Kartu 7 : Chapter Berikutnya 🚀"
+  ];
+
+  const cardsData = {
+    1: {
+      title: "Kuis Intermezzo 🏗️",
+      text: `Pertanyaannya gampang lek, tapi lucu hahahah. Pesan selanjutnya baru terbuka jika sudah menjawab opsi yang benar:\nDari semua elemen konstruksi di bawah ini, mana yang materialnya paling keras dan susah dihancurkan?`,
+      extraHtml: `
+        <button class="quiz-btn" onclick="checkQuiz('A')">A. Beton Mutu K-300 untuk fondasi gedung.</button>
+        <button class="quiz-btn" onclick="checkQuiz('B')">B. Baja Profil WF (Wide Flange) penyangga jembatan.</button>
+        <button class="quiz-btn" onclick="checkQuiz('C')">C. Muka Lae pas pura-pura tegar nahan revisian yang dicoret-coret Dosen Pembimbing.</button>
+        <button class="quiz-btn" onclick="checkQuiz('D')">D. Benteng kesabaran dan mental Lae sampai akhirnya bisa tembus S.T. tahun ini.</button>
+        <div class="quiz-hint">Hint: kunci jawaban mutlak hak prerogatif yang bikin soal ya lek hahaha</div>
+      `
+    },
+    2: {
+      title: "Log Out & Proses Panjang 🎓",
+      text: `Orang awam melihat sebuah gedung dari seberapa cepat ia dibangun. Tapi sebagai seorang Engineer sejati, Lae pasti tahu bahwa bangunan yang dirancang untuk berdiri kokoh melawan badai membutuhkan waktu galian fondasi yang jauh lebih lama.\n\nWaktu yang sedikit lebih lama ini bukanlah waktu yang terbuang sia-sia. Itu adalah durasi yang Tuhan izinkan untuk mengecor mentalmu, merakit besi baja kesabaranmu, dan memastikan struktur karaktermu tidak akan pernah runtuh oleh ujian apa pun di masa depan!\n\nSelamat hari sidang! Statusnya sekarang unofficially sarjana, karena masih ada revisi yang harus diurus. Tapi akhirnya log out juga dari kampus ini!`,
+      extraHtml: ""
+    },
+    3: {
+      title: "Kebanggaan Keluarga 👨‍🎓",
+      text: `Jujur, kita memang masih kurang lama kenalan dan akrab. Kenal dari Tulang dan Nantulang. Tapi Lae, aku bangga samamu.\n\nAku ingat suatu kali melihat Lae menangis di momen partangiangan. Aku tahu, di balik tangis itu ada beban berat, omongan orang, dan ekspektasi soal kelulusan. Tapi Lae, Lae membuktikan bahwa Lae mampu menjadi sarjana pertama dari Keluarga Lae. Lae tetap bertahan di tengah badai, di tengah ucapan yang mungkin udah datang bertubi-tubi.\n\nLae keren, karena sejatinya kemenangan bukan pada mereka yang cepat, tapi kepada mereka yang masih setia untuk bertahan. Selamat kuucapkan pada Lae. Aku yakin, dari pomparan Ompung Juangga, Lae adalah Sarjana Teknik Pertama. Seluruh keluarga pasti turut berbangga!`,
+      extraHtml: ""
+    },
+    4: {
+      title: "Renungan & Waktu Tuhan 🎵",
+      text: `Lagu ini mengingatkan kita bahwa apa pun hasil dan proses panjang hari ini, semuanya berada dalam rancangan tangan Tuhan. Tuhan tidak pernah datang terlalu cepat atau terlalu lambat. Ia selalu datang tepat pada waktu-Nya, membawa keindahan dan kemenangan bagi anak-anak-Nya yang setia berproses.\n\nPengkhotbah 3:11\n"Ia membuat segala sesuatu indah pada waktu-Nya..."`,
+      extraHtml: `
+        <div class="lyrics-box">
+          Bapa Engkau mengenalku<br>
+          Lebih dari siapapun<br>
+          Engkau tahu ceritaku<br>
+          Dan isi hatiku<br>
+          ‘Tak peduli masa lalu<br>
+          Engkau tetap memilihku<br>
+          Ubahkanku, sempurnakan<br>
+          Jadi karya yang indah<br><br>
+          <b>Chorus:</b><br>
+          Kini aku percaya<br>
+          Tiada yang mustahil bagi-Mu<br>
+          Kuasa-Mu, kuatkanku<br>
+          Dasar kuberharap<br>
+          Kini aku berserah<br>
+          Pada rancangan-Mu bagiku<br>
+          Kuikuti panggilan-Mu<br>
+          ‘Kukan setia<br>
+          Sampai akhir hidupku.
+        </div>
+        <a href="https://www.youtube.com/watch?v=29jd_ji_fww&list=RD29jd_ji_fww&start_radio=1" target="_blank" class="yt-btn">▶ Putar Lagu "Bapa Engkau Mengenalku" di YouTube</a>
+      `
+    },
+    5: {
+      title: "Poda & Kekuatan dari Atas 🙏",
+      text: `Sebagai bekal melangkah ke dunia nyata, ingatlah petuah bijak ini:\n\nPoda Batak:\n"Eme sitiktik golang-golang, bahen huruhuru tu parbuean. Saut ma gabe jala horas, gabe tumpuan ni sangkap na uli." (Kesungguhan hati dan kerja keras membuahkan hasil yang manis dan membawa kebaikan).\n\nPoda Jawa:\n"Alon-alon asal kelakon." (Biar pelan yang penting selamat/tercapai. Tidak perlu terburu-buru asal tujuannya terwujud dengan baik).\n\nTetap berpelayanan setelah ini ya Lae. Jangan lupa bahwa sejauh ini Lae bertahan bukan karena kekuatan Lae sendiri, tapi karena rahmat dan pertolongan Tuhan. Tuhan juga yang akan menolong Lae untuk chapter berikutnya.`,
+      extraHtml: ""
+    },
+    6: {
+      title: "Filosofi Dompet Baru 💼",
+      text: `Oh ya, ada titipan kado dompet buat Lae.\n\nKenapa dompet?\nKarena dompet itu melambangkan rezeki dan tempat menyimpan hasil jerih payah. Semoga dengan gelar baru dan dompet baru ini, rezeki Lae makin lancar, pintu berkat makin terbuka lebar, dan gampang dapet kerjaan yang mantap! Amin!`,
+      extraHtml: ""
+    },
+    7: {
+      title: "Chapter Berikutnya 🚀",
+      text: `Gak ada yang tahu, manatau nanti Lae kerja di Jakarta atau takdir mempertemukan kita lagi di proyek-proyek besar selanjutnya, kita bisa ngopi bareng, bernostalgia, dan membahas masa-masa perjuangan kuliah ini, yakan?\n\nSebagai penutup dari kartu pesan ini, doa terbaik kuucapkan untukmu:\nSemoga Tuhan Yesus senantiasa memberkati setiap langkah, karier, dan karya konstruksi yang akan Lae bangun ke depan. Jadilah berkat di manapun Lae berada, sukses selalu, dan tetaplah menjadi Engineer yang berintegritas!\n\nSemangat terus, Lae Nathanael! Selamat menyandang gelar baru secara resmi:\nNathanael Gemayel Marpaung, S.T.\n\nGelar ini bukan sekadar tinta hitam di atas selembar ijazah, melainkan bukti nyata dari sebuah ketekunan yang menolak menyerah pada keadaan. Banggalah pada pencapaian luar biasa ini, Lae!`,
+      extraHtml: ""
+    }
   };
 
-  // Logic Membuka & Menutup Modal General
-  function openModal(modalId) {
-    document.getElementById(modalId).classList.add('active');
-    // Khusus checklist, munculkan item pertama jika belum selesai
-    if(modalId === 'modal-checklist' && !isDone && currentItem === 1) {
-      document.getElementById('item-1').style.display = 'flex';
-    }
-  }
-
-  function closeModal(modalId) {
-    document.getElementById(modalId).classList.remove('active');
-  }
-
-  // TARGET TIME: Kamis, 20 Agustus 2026, 12:00:00 WIB
-  const countDownDate = new Date("Aug 20, 2026 12:00:00+07:00").getTime();
-
-  const timer = setInterval(function() {
-    const now = new Date().getTime();
-    const distance = countDownDate - now;
-
-    if (distance < 0) {
-      clearInterval(timer);
-      document.getElementById("days").innerText = "00";
-      document.getElementById("hours").innerText = "00";
-      document.getElementById("mins").innerText = "00";
-      document.getElementById("secs").innerText = "00";
-      return;
-    }
-
-    const days = Math.floor(distance / (1000 * 60 * 60 * 24));
-    const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-    const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
-    const seconds = Math.floor((distance % (1000 * 60)) / 1000);
-
-    document.getElementById("days").innerText = days < 10 ? "0" + days : days;
-    document.getElementById("hours").innerText = hours < 10 ? "0" + hours : hours;
-    document.getElementById("mins").innerText = minutes < 10 ? "0" + minutes : minutes;
-    document.getElementById("secs").innerText = seconds < 10 ? "0" + seconds : seconds;
-  }, 1000);
-
-  // Modal Checklist Logic
-  let currentItem = 1;
-  const totalItems = 5;
-  let isDone = false;
-
-  function checkAndNext(num) {
-    if(num !== currentItem) return; 
+  function closeWelcomeModal() {
+    document.getElementById("welcome-modal").style.display = "none";
     
-    const item = document.getElementById('item-' + num);
-    if (!item.classList.contains('done')) {
-      item.classList.add('done');
-      
-      if (currentItem < totalItems) {
-        document.getElementById('btn-next').style.display = 'block';
-      } else {
-        isDone = true;
-        document.getElementById('btn-next').style.display = 'none';
-        document.getElementById('success-msg').style.display = 'block';
+    let cardsView = document.getElementById("view-cards");
+    let mainContainer = document.querySelector("#view-cards .container-glass");
+    
+    if (!cardsView.classList.contains('active')) {
+        document.getElementById('view-cards').classList.add('active');
+        document.getElementById('tab-cards').classList.add('active');
+    }
+    if(mainContainer) {
+        mainContainer.style.display = "block";
+    }
+
+    fireConfettiMultiple();
+  }
+
+  function typeWriter() {
+    const cursor = document.getElementById("cursor");
+    const popupText = document.getElementById("popup-text");
+    cursor.style.display = "inline-block";
+
+    if (i < txt.length) {
+      isTyping = true;
+      let char = txt.charAt(i);
+      popupText.innerHTML += (char === '\n') ? '<br>' : char;
+      i++;
+      typingTimeout = setTimeout(typeWriter, speed);
+    } else {
+      isTyping = false;
+      document.getElementById("skip-btn").style.display = "none";
+      onTypingComplete();
+    }
+  }
+
+  function skipTyping() {
+    clearTimeout(typingTimeout);
+    document.getElementById("popup-text").innerHTML = txt.replace(/\n/g, '<br>');
+    i = txt.length;
+    isTyping = false;
+    document.getElementById("skip-btn").style.display = "none";
+    onTypingComplete();
+  }
+
+  function showPopup(option) {
+    currentActiveOption = option;
+    const popup = document.getElementById("popup");
+    const popupTitle = document.getElementById("popup-title");
+    const popupText = document.getElementById("popup-text");
+    const skipBtn = document.getElementById("skip-btn");
+    const extraHtmlContainer = document.getElementById("popup-extra-html");
+    
+    clearTimeout(typingTimeout);
+    
+    popupText.innerHTML = "";
+    extraHtmlContainer.style.display = "none";
+    extraHtmlContainer.innerHTML = "";
+    skipBtn.style.display = "inline-block";
+
+    i = 0;
+    txt = cardsData[option].text;
+    extraHtmlContent = cardsData[option].extraHtml;
+    
+    popupTitle.innerHTML = cardsData[option].title;
+    popup.style.display = "block";
+
+    typeWriter();
+
+    if (option === 2 || option === 7) {
+      fireConfetti();
+    }
+    
+    // Check if we reached the last card to unlock article view
+    if (option === 7) {
+        isArticleUnlocked = true;
+    }
+  }
+
+  function onTypingComplete() {
+    const extraHtmlContainer = document.getElementById("popup-extra-html");
+    if (extraHtmlContent.trim() !== "") {
+      extraHtmlContainer.innerHTML = extraHtmlContent;
+      extraHtmlContainer.style.display = "block";
+    }
+
+    // Jika bukan kartu kuis (kartu 1), unlock kartu berikutnya otomatis
+    if (currentActiveOption > 1 && currentActiveOption === currentOpen) {
+      unlockNextMessage();
+    }
+  }
+
+  function checkQuiz(ans) {
+    if(ans === 'A' || ans === 'B') {
+      alert("Salah! Material itu masih bisa retak kalau kena gempa bumi. Coba lagi!");
+    } else if(ans === 'C') {
+      alert("Hahaha! Bener sih, tapi masih ada yang lebih keras dari itu. Coba yang lain!");
+    } else if(ans === 'D') {
+      alert("JAWABAN BENAR! Beton sekuat apa pun kalah sama mental baja Lae. Welcome to the finish line, Engineer!");
+      closePopup();
+      if(currentOpen === 1) {
+        unlockNextMessage();
         fireConfetti();
       }
     }
   }
 
-  function showNextItem() {
-    document.getElementById('btn-next').style.display = 'none';
-    currentItem++;
-    if (currentItem <= totalItems) {
-      document.getElementById('item-' + currentItem).style.display = 'flex';
+  function unlockNextMessage() {
+    currentOpen++;
+    if(currentOpen <= 7) {
+      const nextBtn = document.getElementById(`btn${currentOpen}`);
+      if (nextBtn) {
+        nextBtn.disabled = false;
+        nextBtn.querySelector("span:first-child").innerHTML = btnNames[currentOpen - 1];
+        nextBtn.querySelector(".btn-icon").innerHTML = "▶";
+      }
     }
   }
 
-  // Particles Background
-  let cv, ctx, w, h;
-  const pts = [];
-  function initParticles() {
-    cv = document.getElementById("particle-canvas");
-    ctx = cv.getContext("2d");
-    w = cv.width = window.innerWidth;
-    h = cv.height = window.innerHeight;
-    window.addEventListener("resize", () => { w = cv.width = window.innerWidth; h = cv.height = window.innerHeight; });
-    for(let i=0; i<40; i++) pts.push({
-      x:Math.random()*w, y:Math.random()*h, r:Math.random()*2+1, 
-      dx:(Math.random()-0.5)*0.5, dy:(Math.random()-0.5)*0.5, a:Math.random()*0.5+0.1
-    });
-    anim();
-  }
-  function anim() {
-    ctx.clearRect(0,0,w,h);
-    pts.forEach(p => { 
-      ctx.beginPath(); ctx.arc(p.x, p.y, p.r, 0, Math.PI*2); 
-      ctx.fillStyle=`rgba(255,255,255,${p.a})`; ctx.fill(); 
-      p.x+=p.dx; p.y+=p.dy; 
-      if(p.x<0)p.x=w; if(p.x>w)p.x=0; if(p.y<0)p.y=h; if(p.y>h)p.y=0; 
-    });
-    requestAnimationFrame(anim);
+  function closePopup() {
+    document.getElementById("popup").style.display = "none";
+    clearTimeout(typingTimeout);
   }
 
-  // Confetti
+  function switchView(view) {
+    // Prevent switching to article if not unlocked
+    if (view === 'article' && !isArticleUnlocked) {
+        alert("Sabar Lae! Buka dan baca dulu semua 7 kartu pesannya sampai selesai buat ngebuka fitur Artikel Full ini. 😉");
+        return;
+    }
+
+    document.getElementById('view-cards').classList.remove('active');
+    document.getElementById('view-article').classList.remove('active');
+    document.getElementById('tab-cards').classList.remove('active');
+    document.getElementById('tab-article').classList.remove('active');
+
+    if(view === 'cards') {
+      document.getElementById('view-cards').classList.add('active');
+      document.getElementById('tab-cards').classList.add('active');
+      document.body.classList.remove('article-mode');
+    } else {
+      document.getElementById('view-article').classList.add('active');
+      document.getElementById('tab-article').classList.add('active');
+      document.body.classList.add('article-mode');
+      fireConfetti();
+    }
+  }
+
+  function switchTheme(theme) {
+    document.getElementById('theme-galaxy').classList.remove('active');
+    document.getElementById('theme-ocean').classList.remove('active');
+    
+    if (theme === 'galaxy') {
+      document.body.classList.remove('theme-ocean');
+      document.getElementById('theme-galaxy').classList.add('active');
+    } else {
+      document.body.classList.add('theme-ocean');
+      document.getElementById('theme-ocean').classList.add('active');
+    }
+  }
+
+  function fireConfettiMultiple() {
+    fireConfetti();
+    setTimeout(fireConfetti, 1000);
+    setTimeout(fireConfetti, 2500);
+  }
+
   function fireConfetti() {
-    var duration = 4.5 * 1000;
+    var duration = 3.5 * 1000;
     var animationEnd = Date.now() + duration;
     var defaults = { startVelocity: 30, spread: 360, ticks: 60, zIndex: 10000 };
     function randomInRange(min, max) { return Math.random() * (max - min) + min; }
+
     var interval = setInterval(function() {
       var timeLeft = animationEnd - Date.now();
       if (timeLeft <= 0) { return clearInterval(interval); }
-      var particleCount = 50 * (timeLeft / duration);
+      var particleCount = 45 * (timeLeft / duration);
       confetti(Object.assign({}, defaults, { particleCount, origin: { x: randomInRange(0.1, 0.3), y: Math.random() - 0.2 } }));
       confetti(Object.assign({}, defaults, { particleCount, origin: { x: randomInRange(0.7, 0.9), y: Math.random() - 0.2 } }));
-    }, 250);
+    }, 260);
   }
+
+  function initParticles() {
+    const canvas = document.getElementById("particle-canvas");
+    const ctx = canvas.getContext("2d");
+    let width = canvas.width = window.innerWidth;
+    let height = canvas.height = window.innerHeight;
+
+    window.addEventListener("resize", () => {
+      width = canvas.width = window.innerWidth;
+      height = canvas.height = window.innerHeight;
+    });
+
+    const particles = [];
+    for (let i = 0; i < 35; i++) {
+      particles.push({
+        x: Math.random() * width, y: Math.random() * height,
+        r: Math.random() * 2.5 + 1,
+        dx: (Math.random() - 0.5) * 0.4, dy: (Math.random() - 0.5) * 0.4,
+        alpha: Math.random() * 0.6 + 0.2
+      });
+    }
+
+    function animate() {
+      ctx.clearRect(0, 0, width, height);
+      particles.forEach(p => {
+        ctx.beginPath(); ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
+        ctx.fillStyle = `rgba(255, 255, 255, ${p.alpha})`; ctx.fill();
+        p.x += p.dx; p.y += p.dy;
+        if (p.x < 0) p.x = width; if (p.x > width) p.x = 0;
+        if (p.y < 0) p.y = height; if (p.y > height) p.y = 0;
+      });
+      requestAnimationFrame(animate);
+    }
+    animate();
+  }
+
+  window.onload = function() {
+    initParticles();
+    // Fire confetti in the background when modal is up
+    setTimeout(fireConfetti, 500); 
+  };
+
+  // FIX: Make sure the welcome modal doesn't close on background click, only the main popup
+  window.onclick = function(event) {
+    const popup = document.getElementById("popup");
+    if (event.target == popup) { closePopup(); }
+  };
 </script>
+
 </body>
 </html>
